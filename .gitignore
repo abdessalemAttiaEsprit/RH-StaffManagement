@@ -1,0 +1,12 @@
+# Angular
+frontend/node_modules/
+frontend/.angular/
+frontend/dist/
+
+# Spring Boot
+backend/target/
+backend/.idea/
+backend/*.iml
+
+# Secrets
+backend/src/main/resources/application.properties
