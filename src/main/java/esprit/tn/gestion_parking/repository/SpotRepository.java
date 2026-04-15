@@ -22,4 +22,5 @@ public interface SpotRepository extends MongoRepository<Spot, String> {
 
     // 4. Liste simple des spots non supprimés
     List<Spot> findByIsDeletedFalse();
+    List<Spot> findByParking_Id(String parkingId);
 }

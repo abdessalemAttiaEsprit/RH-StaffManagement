@@ -2,6 +2,7 @@ package esprit.tn.gestion_parking.repository;
 
 import esprit.tn.gestion_parking.entity.Reservation;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import java.util.List;
 public interface ReservationRepository extends MongoRepository<Reservation, String> {
 
     // 1. Trouver toutes les réservations d'un Spot spécifique
-    // Très important pour vérifier si un spot est libre avant de réserver
     List<Reservation> findBySpotId(String spotId);
 
     // 2. Trouver les réservations par matricule (ignorer la casse)
@@ -20,4 +20,13 @@ public interface ReservationRepository extends MongoRepository<Reservation, Stri
 
     // 4. Trouver les réservations d'un spot qui ne sont pas supprimées
     List<Reservation> findBySpotIdAndIsDeletedFalse(String spotId);
+
+    List<Reservation> findBySpot_Parking_IdAndIsDeletedFalse(String parkingId);
+
+    List<Reservation> findBySpotIdInAndIsDeletedFalse(List<String> spotIds);
+
+    // 🚨 LA CORRECTION EST ICI : on cherche directement dans "spot", pas dans "spot.$id"
+    @Query("{ 'spot': { $in: ?0 }, 'isDeleted': false }")
+    List<Reservation> findBySpotIdsIn(List<org.bson.types.ObjectId> spotIds);
+
 }

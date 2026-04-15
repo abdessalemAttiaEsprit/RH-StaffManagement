@@ -1,0 +1,49 @@
+package esprit.tn.gestion_parking.dto;
+
+import esprit.tn.gestion_parking.entity.StatutSpot;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.HashMap;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SpotDTO {
+    private String id;
+    private String nom;
+    private String description;
+    private StatutSpot statut;
+    private Double x;
+    private Double y;
+    
+    // Kept for flat DTO structure internally
+    private String parkingId;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    // Mimic the nested "parking" object structure exactly as expected by the frontend
+    @JsonProperty("parking")
+    public Map<String, String> getParking() {
+        if (this.parkingId != null) {
+            Map<String, String> p = new HashMap<>();
+            p.put("id", this.parkingId);
+            return p;
+        }
+        return null;
+    }
+
+    @JsonProperty("parking")
+    public void setParking(Map<String, String> parking) {
+        if (parking != null && parking.containsKey("id")) {
+            this.parkingId = parking.get("id");
+        }
+    }
+}

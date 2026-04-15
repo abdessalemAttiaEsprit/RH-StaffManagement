@@ -15,6 +15,6 @@ public interface ParkingRepository extends MongoRepository<Parking, String> {
     // 2. Find a specific parking by ID only if it's not deleted
     Optional<Parking> findByIdAndIsDeletedFalse(String id);
 
-    // 3. Search by name (case insensitive)
+
     List<Parking> findByNomContainingIgnoreCase(String nom);
 }
