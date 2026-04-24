@@ -1,0 +1,53 @@
+<div class="sp-modal-overlay" (click)="close.emit()" role="dialog" aria-modal="true">
+  <div class="sp-modal" (click)="$event.stopPropagation()">
+    <div class="sp-modal-header">
+      <h5 class="sp-modal-title">
+        <i class="bi bi-calendar-plus"></i>
+        {{ absenceToEdit ? 'Modifier' : 'Nouvelle' }} Absence
+      </h5>
+      <button type="button" class="btn btn-ghost btn-sm btn-icon" (click)="close.emit()" aria-label="Fermer">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="sp-modal-body">
+      <p class="mb-4">Pour: <strong>{{ personnel.nom }} {{ personnel.prenom }}</strong></p>
+
+      <form #absenceForm="ngForm">
+        <div class="sp-field mb-3">
+          <label class="form-label">Date de début</label>
+          <input class="form-input" type="date" [(ngModel)]="newAbsence.startDate" name="startDate" required>
+        </div>
+
+        <div class="sp-field mb-3">
+          <label class="form-label">Date de fin</label>
+          <input class="form-input" type="date" [(ngModel)]="newAbsence.endDate" name="endDate" required>
+
+          <div *ngIf="newAbsence.startDate && newAbsence.endDate && newAbsence.startDate > newAbsence.endDate" class="alert alert-error mt-2">
+            <i class="bi bi-exclamation-triangle"></i>
+            <div>La date de fin doit être après le début.</div>
+          </div>
+        </div>
+
+        <div class="sp-field mb-3">
+          <label class="form-label">Motif de l'absence</label>
+          <select class="form-input" [(ngModel)]="newAbsence.typeAbsence" name="typeAbsence">
+            <option *ngFor="let type of typesAbsence" [value]="type.value">{{ type.label }}</option>
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <div class="sp-modal-footer">
+      <button type="button" class="btn btn-ghost" (click)="close.emit()">Annuler</button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        [disabled]="!newAbsence.startDate || !newAbsence.endDate || newAbsence.startDate > newAbsence.endDate"
+        (click)="submitForm()"
+      >
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,190 @@
+<div class="page-content">
+
+  <div class="sp-hero">
+    <div>
+      <h1>{{ isEditMode ? 'Modifier le Profil' : 'Nouvel Agent' }}</h1>
+      <p>
+        {{ isEditMode
+          ? 'Mise à jour des informations de ' + personnelForm.value.prenom + ' ' + personnelForm.value.nom
+          : 'Remplissez les détails pour créer un nouveau dossier employé.'
+        }}
+      </p>
+    </div>
+    <button type="button" class="btn btn-ghost" (click)="annuler()">
+      <i class="bi bi-x-lg"></i>
+      Annuler
+    </button>
+  </div>
+
+  <form [formGroup]="personnelForm" (ngSubmit)="onSubmit()" *ngIf="personnelForm">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="sp-card mb-4">
+          <div class="section-header">
+            <div class="section-title"><i class="bi bi-person-vcard"></i> Identité & Expérience</div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6 sp-field">
+              <label class="form-label">Prénom</label>
+              <input class="form-input" type="text" formControlName="prenom" placeholder="Ex: Ahmed">
+            </div>
+            <div class="col-md-6 sp-field">
+              <label class="form-label">Nom</label>
+              <input class="form-input" type="text" formControlName="nom" placeholder="Ex: Mansour">
+            </div>
+
+            <div class="col-md-6 sp-field">
+              <label class="form-label">Années d'expérience</label>
+              <input class="form-input" type="number" formControlName="experienceYears">
+              <div class="pf-hint">Influence le calcul du salaire suggéré.</div>
+            </div>
+            <div class="col-md-6 sp-field">
+              <label class="form-label">Matricule</label>
+              <input class="form-input" type="text" value="Généré automatiquement" readonly>
+            </div>
+
+            <div class="col-md-6 sp-field">
+              <label class="form-label">CIN (8 chiffres)</label>
+              <input class="form-input" type="text" formControlName="cin" placeholder="01234567">
+            </div>
+            <div class="col-md-6 sp-field">
+              <label class="form-label">Email Professionnel</label>
+              <input class="form-input" type="email" formControlName="email" placeholder="ahmed@smartpark.tn">
+            </div>
+
+            <div class="col-md-6 sp-field">
+              <label class="form-label">Téléphone</label>
+              <input class="form-input" type="text" formControlName="telephone" placeholder="+216 ...">
+            </div>
+            <div class="col-md-6 sp-field">
+              <label class="form-label">CNSS</label>
+              <input class="form-input" type="text" formControlName="cnssNumber">
+            </div>
+
+            <div class="col-12 sp-field">
+              <label class="form-label">RIB</label>
+              <input class="form-input" type="text" formControlName="rib" placeholder="20 chiffres">
+            </div>
+          </div>
+        </div>
+
+        <div class="sp-card" formGroupName="contrat">
+          <div class="section-header">
+            <div class="section-title"><i class="bi bi-file-earmark-text"></i> Contrat & Rémunération</div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-8 sp-field">
+              <label class="form-label">Rôle / Poste</label>
+              <select class="form-input" formControlName="role">
+                <option value="">Sélectionnez un poste...</option>
+                <option value="DEVELOPER">Développeur</option>
+                <option value="MANAGER">Manager</option>
+                <option value="TECHNICIEN">Technicien / Maintenance</option>
+                <option value="COACH_SPORTIF">Coach Sportif</option>
+                <option value="SELLER">Vendeur</option>
+                <option value="AGENT_PARKING">Agent de Parking</option>
+                <option value="EVENT_PLANNER">Planificateur d'Événements</option>
+                <option value="CLEANING_MAINTENANCE">Entretien et Nettoyage</option>
+                <option value="OTHER">Autre</option>
+              </select>
+            </div>
+            <div class="col-md-4 sp-field">
+              <label class="form-label">Type de Contrat</label>
+              <select class="form-input" formControlName="typeContrat">
+                <option [ngValue]="null">Non spécifié</option>
+                <option value="CDI">CDI</option>
+                <option value="CDD">CDD</option>
+                <option value="SIVP">SIVP</option>
+                <option value="STAGE">Stage</option>
+              </select>
+            </div>
+
+            <div class="col-12 sp-field" *ngIf="personnelForm.get('contrat.role')?.value === 'OTHER'">
+              <label class="form-label">Précisez le poste</label>
+              <input class="form-input" type="text" formControlName="roleAutre" placeholder="Ex: Responsable support, Agent accueil...">
+            </div>
+
+            <div class="col-md-4 sp-field">
+              <label class="form-label">Salaire de Base (TND)</label>
+              <input class="form-input" type="number" formControlName="salaireBase">
+            </div>
+            <div class="col-md-4 sp-field">
+              <label class="form-label">Date d'Entrée</label>
+              <input class="form-input" type="date" formControlName="dateDebut">
+            </div>
+            <div class="col-md-4 sp-field">
+              <label class="form-label">Date de Fin</label>
+              <input class="form-input" type="date" formControlName="dateFin">
+            </div>
+            <div class="col-md-4 sp-field">
+              <label class="form-label">Taux Heure Sup</label>
+              <input class="form-input" type="number" formControlName="tauxHoraireSup">
+            </div>
+          </div>
+
+          <div class="mt-4" formGroupName="avantages">
+            <div class="pf-subtitle">Suggestions Primes Mensuelles</div>
+            <div class="row g-3">
+              <div class="col-md-4 sp-field">
+                <label class="form-label">Transport</label>
+                <input class="form-input" type="number" formControlName="primeTransport">
+              </div>
+              <div class="col-md-4 sp-field">
+                <label class="form-label">Risque</label>
+                <input class="form-input" type="number" formControlName="primeRisque">
+              </div>
+              <div class="col-md-4 sp-field">
+                <label class="form-label">Panier</label>
+                <input class="form-input" type="number" formControlName="panier">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="pf-sticky">
+          <div class="sp-card">
+            <div class="section-header">
+              <div class="section-title">Validation</div>
+            </div>
+
+            <div class="alert alert-info">
+              <i class="bi bi-info-circle"></i>
+              <div>
+                Le salaire et les primes sont suggérés par l'IA selon le rôle, l'expérience et le type de contrat.
+                <div class="mt-2">
+                  <strong>AI Score (CV)</strong> : {{ aiScore }}/100
+                  <span *ngIf="aiScoreIsDefault" class="text-muted">(par défaut)</span>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mb-2" [disabled]="personnelForm.invalid">
+              <i class="bi bi-check-circle"></i>
+              {{ isEditMode ? 'Mettre à jour' : 'Enregistrer Dossier' }}
+            </button>
+            <button type="button" class="btn btn-ghost w-100" (click)="annuler()">Annuler</button>
+
+            <div *ngIf="personnelForm.invalid && personnelForm.touched" class="alert alert-error mt-3">
+              <i class="bi bi-exclamation-triangle"></i>
+              <div>Veuillez vérifier les champs requis.</div>
+            </div>
+          </div>
+
+          <div class="alert alert-success mt-3">
+            <i class="bi bi-shield-check"></i>
+            <div>Les données sont sécurisées et indexées.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div *ngIf="!personnelForm" class="pf-loader">
+    <div class="spinner-border" role="status" aria-label="Chargement"></div>
+    <p>Préparation du dossier agent...</p>
+  </div>
+</div>

@@ -1,0 +1,120 @@
+<div class="sp-modal-overlay" (click)="onClose()">
+  <div class="sp-modal sp-modal-l" (click)="$event.stopPropagation()">
+    
+    <div class="sp-modal-header">
+      <h3><i class="bi bi-file-earmark-plus"></i> Nouvelle Fiche de Paie</h3>
+      <button class="btn btn-ghost btn-sm btn-icon" type="button" (click)="onClose()" aria-label="Fermer">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="sp-modal-body">
+      <form [formGroup]="paymentForm">
+        
+        <!-- SÉLECTION DU PERSONNEL -->
+        <div class="sp-v-stack" *ngIf="!personnelFound">
+          <div class="sp-field">
+            <label class="form-label" for="personnel-select">Sélectionner un agent</label>
+            <select class="form-input" id="personnel-select" formControlName="matricule" (change)="onSelectChange()">
+              <option value="">-- Choisir un agent --</option>
+              <option *ngFor="let p of personnelList" [value]="p.matricule">
+                {{ p.nom }} {{ p.prenom }} - {{ p.matricule }}
+              </option>
+            </select>
+          </div>
+          
+          <div class="sp-divider-text">OU</div>
+
+          <div class="sp-field">
+            <label class="form-label" for="matricule-search">Rechercher par matricule</label>
+            <div class="sp-input-group">
+              <i class="bi bi-search"></i>
+              <input type="text" 
+                     id="matricule-search"
+                     class="form-input"
+                     placeholder="Ex: P-2026-0001"
+                     [disabled]="loadingList"
+                     (input)="paymentForm.get('matricule')?.setValue($any($event.target).value)">
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="personnelFound" class="sp-v-stack animate__animated animate__fadeIn">
+          
+          <div class="sp-grid-col-3">
+            <div class="sp-field sp-grid-col-span-2">
+              <label class="form-label">Nom Complet</label>
+              <input class="form-input" type="text" formControlName="fullPersonnelName" readonly>
+            </div>
+            <div class="sp-field">
+              <label class="form-label">Mois de paie</label>
+              <select class="form-input" formControlName="month">
+                <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ALERTE DOUBLON -->
+          <div *ngIf="duplicatePaymentError" class="alert alert-warning pm-alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            <p><strong>Paiement existant!</strong> {{ duplicatePaymentError.replace('⚠️ ', '') }}</p>
+            <button class="sp-btn-icon" type="button" (click)="duplicatePaymentError = ''" aria-label="Fermer">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+
+          <div class="sp-card sp-card-box">
+            <div class="sp-grid-col-3">
+              <div class="sp-field">
+                <label><i class="bi bi-calendar2-x"></i> Jours d'absence</label>
+                <input class="form-input" type="number" formControlName="totalAbsenceDays" readonly>
+              </div>
+              <div class="sp-stat-box">
+                <label>Quota Toléré</label>
+                <div class="sp-stat-value">{{ calculatedBalance }} jours</div>
+              </div>
+              <div class="sp-stat-box sp-text-danger">
+                <label>Pénalité Déduite</label>
+                <div class="sp-stat-value">{{ paymentForm.get('deductionsAbsence')?.value | number:'1.2-2' }} TND</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sp-grid-col-2">
+            <div class="sp-field">
+              <label class="form-label" for="rib">RIB Bancaire</label>
+              <input class="form-input" type="text" id="rib" formControlName="rib" 
+                     [class.is-invalid]="paymentForm.get('rib')?.invalid && paymentForm.get('rib')?.touched"
+                     placeholder="RIB (20 chiffres)">
+              <div *ngIf="paymentForm.get('rib')?.invalid && paymentForm.get('rib')?.touched" class="sp-field-error">
+                Le RIB est obligatoire pour le virement.
+              </div>
+            </div>
+            <div class="sp-field">
+              <label class="form-label" for="cnss">N° CNSS</label>
+              <input class="form-input" type="text" id="cnss" formControlName="cnssNumber"
+                     [class.is-invalid]="paymentForm.get('cnssNumber')?.invalid && paymentForm.get('cnssNumber')?.touched"
+                     placeholder="Affiliation sociale">
+              <div *ngIf="paymentForm.get('cnssNumber')?.invalid && paymentForm.get('cnssNumber')?.touched" class="sp-field-error">
+                Numéro CNSS requis.
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="sp-modal-footer">
+      <button class="btn btn-secondary" type="button" (click)="onClose()">
+        Annuler
+      </button>
+      <button class="btn btn-primary" type="button"
+              [disabled]="paymentForm.invalid || !personnelFound || !!duplicatePaymentError" 
+              (click)="onSubmit()">
+        <i class="bi bi-file-earmark-plus"></i>
+        Générer le bulletin
+      </button>
+    </div>
+
+  </div>
+</div>

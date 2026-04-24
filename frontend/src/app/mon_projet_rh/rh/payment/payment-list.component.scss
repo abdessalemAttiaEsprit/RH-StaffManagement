@@ -1,0 +1,148 @@
+:host {
+  display: block;
+}
+
+.pl-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 0.85rem;
+  margin: 1rem 0 1.25rem;
+}
+
+.pl-subnav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-weight: 650;
+  font-size: 0.88rem;
+
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.pl-subnav-link:hover {
+  color: var(--text);
+  border-color: var(--border2);
+  transform: translateY(-1px);
+}
+
+.pl-subnav-link.active {
+  color: var(--green);
+  background: var(--green-glow);
+  border-color: var(--border2);
+}
+
+.pl-subnav-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--green-glow);
+  border-color: var(--green);
+}
+
+/* Edit modal (used inside payment-list template) */
+.sp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1050;
+}
+
+.sp-modal {
+  width: min(900px, 100%);
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.35);
+}
+
+.sp-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.sp-modal-title {
+  margin: 0;
+  font-family: var(--font-title);
+  font-weight: 800;
+}
+
+.sp-modal-body {
+  padding: 1.25rem;
+}
+
+.sp-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.pl-rate-value {
+  font-family: var(--font-title);
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-top: 0.5rem;
+}
+
+.pl-rate-sub {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin-top: 0.35rem;
+}
+
+.pl-table-wrap {
+  overflow-x: auto;
+}
+
+.pl-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn.btn-sm {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+}
+
+.btn-icon {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Add the missing “blue” variant using existing theme tokens */
+.stat-card.blue::before {
+  background: linear-gradient(90deg, var(--blue), transparent);
+}
+
+.stat-icon.blue {
+  background: rgba(59, 158, 255, 0.12);
+}
+
+.stat-value.blue {
+  color: var(--blue);
+}

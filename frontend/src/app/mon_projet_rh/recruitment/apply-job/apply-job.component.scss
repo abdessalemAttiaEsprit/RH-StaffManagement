@@ -1,0 +1,143 @@
+.apply-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.apply-sticky {
+  position: sticky;
+  top: 1.25rem;
+}
+
+.apply-meta {
+  display: grid;
+  gap: .9rem;
+  padding: 16px;
+}
+
+.apply-meta-label {
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  margin-bottom: 4px;
+}
+
+.apply-meta-value {
+  font-size: .92rem;
+  color: var(--text);
+}
+
+.apply-meta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.apply-section-title {
+  font-size: .95rem;
+  font-weight: 800;
+  margin: 16px 16px 12px;
+}
+
+.apply-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px;
+}
+
+.apply-required {
+  color: var(--red);
+}
+
+.apply-help {
+  margin-top: 6px;
+  font-size: .82rem;
+  color: var(--muted);
+}
+
+.apply-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.apply-upload,
+.apply-upload-success {
+  border: 1px dashed var(--border);
+  background: var(--bg2);
+  border-radius: 12px;
+  padding: 1rem;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: .4rem;
+}
+
+.apply-upload {
+  cursor: pointer;
+  transition: border-color .2s, background .2s, transform .2s;
+}
+
+.apply-upload:hover {
+  border-color: var(--primary);
+  background: var(--bg3);
+  transform: translateY(-1px);
+}
+
+.apply-upload-icon {
+  font-size: 1.8rem;
+  color: var(--muted);
+  opacity: .9;
+}
+
+.apply-upload-icon.success {
+  color: var(--primary);
+}
+
+.apply-upload-title {
+  font-weight: 800;
+  color: var(--text);
+}
+
+.apply-upload-sub {
+  font-size: .85rem;
+  color: var(--muted);
+}
+
+.live-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.btn-sm {
+  padding: 8px 12px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 980px) {
+  .apply-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .apply-sticky {
+    position: static;
+  }
+
+  .apply-actions {
+    justify-content: stretch;
+  }
+
+  .apply-actions .btn {
+    flex: 1;
+  }
+}

@@ -1,0 +1,40 @@
+:host {
+  display: block;
+}
+
+.pp-card {
+  margin-bottom: 1rem;
+}
+
+.pp-alerts {
+  margin-top: 1rem;
+}
+
+.pp-table-wrap {
+  overflow-x: auto;
+}
+
+.pp-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+
+.pp-actions-gap {
+  margin-bottom: 1rem;
+}
+
+.pp-btn-row {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.pp-pre {
+  white-space: pre-wrap;
+}
+
+.pp-textarea {
+  min-height: 120px;
+}

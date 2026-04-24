@@ -1,0 +1,66 @@
+<ng-container *ngIf="application as a">
+  <div class="sp-modal-overlay" (click)="onClose()">
+    <div class="sp-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <div class="sp-modal-header">
+        <h5 class="sp-modal-title">Détails de la candidature</h5>
+        <button type="button" class="btn btn-ghost btn-icon" (click)="onClose()" aria-label="Fermer">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="sp-modal-body">
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <div class="form-label">Candidat</div>
+            <div class="fw-bold">{{ a.candidateName || '-' }}</div>
+            <div class="small rj-muted">{{ a.candidateEmail || '-' }}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-label">Statut</div>
+            <span class="badge badge-blue">{{ getStatusLabel(a.status) | titlecase }}</span>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <div class="form-label">Offre</div>
+            <div>{{ a.jobTitle || a.jobPostingId || '-' }}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-label">Date de candidature</div>
+            <div>{{ (a.appliedDate || a.applicationDate) | date:'dd/MM/yyyy HH:mm' }}</div>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-3" *ngIf="a.interviewDate || a.interviewLocation">
+          <div class="col-md-12">
+            <div class="form-label">Entretien</div>
+            <div>{{ a.interviewDate | date:'dd/MM/yyyy HH:mm' }}</div>
+            <div class="small rj-muted">{{ a.interviewLocation || 'À confirmer' }}</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="form-label">Lettre de motivation</div>
+          <div class="rj-pre">{{ a.coverLetter || '-' }}</div>
+        </div>
+
+        <div class="row g-3" *ngIf="a.aiScore !== undefined || a.aiFeedback">
+          <div class="col-md-6">
+            <div class="form-label">Score IA</div>
+            <div class="fw-bold">{{ a.aiScore ?? '-' }}<span *ngIf="a.aiScore !== undefined">/100</span></div>
+            <div class="small rj-muted" *ngIf="a.evaluatedAt">Évalué le {{ a.evaluatedAt | date:'dd/MM/yyyy HH:mm' }}</div>
+          </div>
+          <div class="col-md-6" *ngIf="a.aiFeedback">
+            <div class="form-label">Analyse détaillée</div>
+            <div class="rj-pre">{{ a.aiFeedback }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-modal-footer">
+        <button class="btn btn-ghost" type="button" (click)="onClose()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</ng-container>

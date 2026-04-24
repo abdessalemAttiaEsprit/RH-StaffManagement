@@ -1,0 +1,105 @@
+<div class="sp-page">
+  <div class="sp-hero">
+    <div>
+       <h1><i class="bi bi-speedometer2"></i> Tableau de Bord <span>RH</span></h1>
+      <p>Bienvenue dans SmartPark - Gestion des Ressources Humaines</p>
+    </div>
+    <div class="sp-hero-actions">
+      <button class="btn btn-primary" (click)="loadStatistics()">
+        <i class="bi bi-arrow-repeat"></i> Actualiser
+      </button>
+    </div>
+  </div>
+
+  <div class="sp-container">
+    <!-- Quick Stats Section -->
+    <div class="sp-section">
+      <h2 class="sp-section-title">Résumé Rapide</h2>
+      <div class="sp-stats-grid">
+        <!-- Total Personnel -->
+        <div class="sp-stat green">
+          <div class="s-icon"><i class="bi bi-people"></i></div>
+          <p class="s-label">Employés Total</p>
+          <p class="s-val green">{{ stats.totalPersonnel }}</p>
+        </div>
+
+        <!-- Total Payments -->
+        <div class="sp-stat blue">
+          <div class="s-icon"><i class="bi bi-cash-coin"></i></div>
+          <p class="s-label">Paiements</p>
+          <p class="s-val blue">{{ stats.totalPayments }}</p>
+        </div>
+
+        <!-- Open Job Postings -->
+        <div class="sp-stat amber">
+          <div class="s-icon"><i class="bi bi-briefcase"></i></div>
+          <p class="s-label">Offres Ouvertes</p>
+          <p class="s-val amber">{{ stats.openJobPostings }}</p>
+        </div>
+
+        <!-- Active Contracts -->
+        <div class="sp-stat purple">
+          <div class="s-icon"><i class="bi bi-file-earmark-text"></i></div>
+          <p class="s-label">Contrats Actifs</p>
+          <p class="s-val purple">{{ stats.activeContracts }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoadingStats" class="sp-loading-spinner">
+      <div class="sp-spinner"></div>
+      <span>Chargement...</span>
+    </div>
+    <!-- Navigation Cards Section -->
+    <div class="sp-section">
+      <h2 class="sp-section-title">Fonctionnalités Principales</h2>
+      <div class="sp-grid-col-3">
+        <div *ngFor="let item of menuItems" class="sp-card sp-card-interactive" (click)="navigateTo(item.route)">
+          <div class="sp-card-header">
+            <div class="sp-card-icon" [ngClass]="item.colorClass">
+              <i [ngClass]="item.icon"></i>
+            </div>
+          </div>
+          <div class="sp-card-body">
+            <h3 class="sp-card-title">{{ item.title }}</h3>
+            <p class="sp-card-text">{{ item.description }}</p>
+          </div>
+          <div class="sp-card-footer" *ngIf="item.stat">
+            <span class="sp-card-stat-value">{{ getStatValue(item.stat) }}</span>
+            <span class="sp-card-stat-label">{{ item.statLabel }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity Section -->
+    <div class="sp-section">
+      <h2 class="sp-section-title">Informations Utiles</h2>
+      <div class="sp-grid-col-3">
+        <div class="sp-alert info">
+          <i class="bi bi-info-circle"></i>
+          <div class="sp-alert-content">
+            <h4 class="sp-alert-title">Bienvenue</h4>
+            <p>Utilisez le tableau de bord pour accéder à toutes les fonctionnalités de gestion RH.</p>
+          </div>
+        </div>
+        <div class="sp-alert success">
+          <i class="bi bi-check-circle"></i>
+          <div class="sp-alert-content">
+            <h4 class="sp-alert-title">Mise à jour</h4>
+            <p>Tous les modules sont fonctionnels. Dernière synchro il y a 2 minutes.</p>
+          </div>
+        </div>
+        <div class="sp-alert warning">
+          <i class="bi bi-exclamation-triangle"></i>
+          <div class="sp-alert-content">
+            <h4 class="sp-alert-title">Attention</h4>
+            <p>10 absences non justifiées en attente de traitement.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

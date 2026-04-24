@@ -1,0 +1,160 @@
+:host {
+  display: block;
+}
+
+.sp-grid-col-3 {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+.sp-grid-col-span-1 { grid-column: span 1; }
+.sp-grid-col-span-2 { grid-column: span 2; }
+
+.sp-grid-col-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.sp-v-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sp-label {
+  display: block;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  margin-bottom: 6px;
+}
+
+.sp-logo-uploader {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 2px dashed var(--border2);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--bg3);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.sp-logo-placeholder {
+  text-align: center;
+  color: var(--muted);
+  i {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  span {
+    font-size: 0.875rem;
+  }
+}
+
+.sp-info-field {
+  margin-bottom: 1rem;
+  label {
+    display: block;
+    font-size: .72rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    margin-bottom: 4px;
+  }
+  span {
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+}
+
+.sp-card-box {
+  background: var(--bg3);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin: 1.5rem;
+  border: 1px solid var(--border);
+}
+
+.cs-subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+
+.cs-card-body {
+  margin-top: 1rem;
+}
+
+.cs-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.sp-mt {
+  margin-top: 1.5rem;
+}
+
+.sp-alert-content {
+  flex: 1;
+}
+
+.sp-btn-icon {
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.cs-btn-icon {
+  width: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sp-spinner-in-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sp-spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid var(--border2);
+  border-top-color: var(--green);
+  animation: sp-spin 0.9s linear infinite;
+}
+
+@keyframes sp-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .sp-grid-col-3, .sp-grid-col-2 {
+    grid-template-columns: 1fr;
+  }
+}
+

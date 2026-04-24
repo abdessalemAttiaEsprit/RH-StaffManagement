@@ -44,7 +44,23 @@ public class SecurityConfig {
                                 "/api/reservations/**",
                                 "/api/tarifs/**",
                                 "/api/chatbot/**",
-                                "/api/stats/**"
+                                "/api/stats/**",
+                                "/api/careers/**",
+                                "/api/candidates/**"
+                        ).permitAll()
+
+                        // ✅ Routes RH / Personnel (protégées)
+                        .requestMatchers(
+                                "/api/personnel/**",
+                                "/api/payments/**",
+                                "/api/settings/**",
+                                "/api/payroll-settings/**",
+                                "/api/personnel-requests/**",
+                                "/api/recruitment/**",
+                                "/api/job-postings/**",
+                                "/api/applications/**",
+                                "/api/interviews/**",
+                                "/api/salary-ai/**"
                         ).permitAll()
 
                         // ✅ Route protégée (AJOUTÉE ICI)
@@ -70,10 +86,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(
-                List.of("http://localhost:4200"));
+        // Allow local dev servers on any port (e.g. 4200, 4201) while keeping it scoped to localhost.
+        config.setAllowedOriginPatterns(
+                List.of("http://localhost:*", "http://127.0.0.1:*")
+        );
         config.setAllowedMethods(
-                List.of("GET","POST","PUT","DELETE","OPTIONS"));
+                List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 

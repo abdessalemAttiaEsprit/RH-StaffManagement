@@ -1,0 +1,227 @@
+<div class="page-content">
+
+  <div class="sp-hero">
+    <div>
+      <h1>Paies & <span>Salaires</span></h1>
+      <p><span class="live-dot"></span> Gestion financière SmartPark</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-secondary" type="button" (click)="generateAutoAll()">
+        <i class="bi bi-magic"></i>
+        Génération Auto
+      </button>
+      <button class="btn btn-primary" type="button" (click)="openGenerateModal()">
+        <i class="bi bi-plus-lg"></i>
+        Individuel
+      </button>
+    </div>
+  </div>
+
+  <div class="sp-card pl-subnav" aria-label="Navigation RH">
+    <a
+      class="pl-subnav-link"
+      routerLink="/rh/personnel"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Personnels</a>
+
+    <a
+      class="pl-subnav-link"
+      routerLink="/rh/personnel/absences"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Absences</a>
+
+    <a
+      class="pl-subnav-link"
+      routerLink="/rh/personnel/paiements"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Paiements</a>
+
+    <a
+      class="pl-subnav-link"
+      routerLink="/rh/recrutement/offres"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Offres & Candidatures</a>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="stat-header">
+        <div class="stat-label">Total Paiements</div>
+        <div class="stat-icon blue"><i class="bi bi-receipt"></i></div>
+      </div>
+      <div class="stat-value blue">{{ totalPaymentsCount }}</div>
+    </div>
+
+    <div class="stat-card green">
+      <div class="stat-header">
+        <div class="stat-label">Montant Payé</div>
+        <div class="stat-icon green"><i class="bi bi-check2-circle"></i></div>
+      </div>
+      <div class="stat-value green">{{ totalPaidAmount | number:'1.2-2' }} TND</div>
+    </div>
+
+    <div class="stat-card amber">
+      <div class="stat-header">
+        <div class="stat-label">En Attente</div>
+        <div class="stat-icon amber"><i class="bi bi-hourglass-split"></i></div>
+      </div>
+      <div class="stat-value amber">{{ totalPendingAmount | number:'1.2-2' }} TND</div>
+    </div>
+
+    <div class="stat-card purple">
+      <div class="stat-header">
+        <div class="stat-label">Montant Moyen</div>
+        <div class="stat-icon purple"><i class="bi bi-graph-up"></i></div>
+      </div>
+      <div class="stat-value purple">{{ averageAmount | number:'1.2-2' }} TND</div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="sp-card">
+        <div class="section-title"><i class="bi bi-percent"></i> Taux CNSS</div>
+        <div class="pl-rate-value">{{ (TAUX_CNSS * 100) | number:'1.0-2' }}%</div>
+        <div class="pl-rate-sub">Retenu sur le salaire brut pour la sécurité sociale.</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="sp-card">
+        <div class="section-title"><i class="bi bi-percent"></i> Taux IRPP</div>
+        <div class="pl-rate-value">{{ (TAUX_IRPP_TRANCHE1 * 100) | number:'1.0-0' }}% / {{ (TAUX_IRPP_TRANCHE2 * 100) | number:'1.0-0' }}%</div>
+        <div class="pl-rate-sub">{{ TAUX_IRPP_TRANCHE1 * 100 | number:'1.0-0' }}% si &lt; {{ SEUIL_IRPP }} TND | {{ TAUX_IRPP_TRANCHE2 * 100 | number:'1.0-0' }}% si ≥ {{ SEUIL_IRPP }} TND</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT LIST -->
+  <div class="sp-card">
+    <div class="section-header">
+      <div class="section-title"><i class="bi bi-funnel"></i> Filtres des Paiements</div>
+    </div>
+    <div>
+      <div class="row g-3">
+        <div class="col-md-2">
+          <select class="form-input" [value]="filterMonth" (change)="onMonthChange($event)">
+            <option *ngFor="let m of monthsMap" [value]="m.value">{{ m.label }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select class="form-input" [value]="filterYear" (change)="onYearChange($event)">
+            <option *ngFor="let y of availableYears" [value]="y">{{ y }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select class="form-input" [value]="filterStatus" (change)="onStatusChange($event)">
+            <option value="ALL">Tous statuts</option>
+            <option value="PAID">Payé</option>
+            <option value="PENDING">En attente</option>
+            <option value="DISCIPLINE_COUNCIL">Conseil de discipline</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-input" placeholder="Nom ou matricule..." [(ngModel)]="searchTerm" (ngModelChange)="onFilterChange()">
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-ghost w-100" type="button" (click)="resetFilters()">
+            <i class="bi bi-arrow-clockwise"></i>
+            Réinitialiser
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pl-table-wrap">
+      <table class="sp-table">
+        <thead>
+          <tr>
+            <th>Employé</th>
+            <th>Période</th>
+            <th>Net à Payer</th>
+            <th class="text-center">Statut</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of filteredPayments">
+            <td>
+              <div class="fw-bold text-white">{{ p.fullPersonnelName }}</div>
+              <div class="text-white small">Matricule: {{ p.matricule }}</div>
+            </td>
+            <td><span class="badge badge-blue">{{ p.month }}/{{ p.year }}</span></td>
+            <td><div class="fw-bold text-white">{{ p.finalAmount | number:'1.3-3' }} TND</div></td>
+            <td class="text-center">
+              <span class="badge" [ngClass]="{'badge-red': isDisciplineCase(p), 'badge-green': !isDisciplineCase(p) && getEffectiveStatus(p) === 'PAID', 'badge-amber': !isDisciplineCase(p) && getEffectiveStatus(p) === 'PENDING'}">
+                {{ getStatusLabel(p) }}
+              </span>
+              <i *ngIf="isDisciplineCase(p) || hasPaymentIssue(p)" class="bi bi-exclamation-triangle-fill text-danger ms-2" [title]="isDisciplineCase(p) ? 'Salaire négatif : conseil de discipline' : 'Données incomplètes (RIB)'" ></i>
+            </td>
+            <td class="text-end">
+              <div class="pl-actions">
+                <button *ngIf="getEffectiveStatus(p) === 'PENDING' && !isDisciplineCase(p)" class="btn btn-primary btn-sm" type="button" [disabled]="hasPaymentIssue(p)" (click)="onValidate(p)" [title]="hasPaymentIssue(p) ? 'Dossier incomplet' : 'Valider'">✓</button>
+                <button class="btn btn-ghost btn-sm btn-icon" type="button" (click)="openEditModal(p)" aria-label="Modifier"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-ghost btn-sm btn-icon" type="button" (click)="generatePDF(p)" aria-label="Télécharger PDF"><i class="bi bi-file-earmark-pdf"></i></button>
+                <button class="btn btn-danger btn-sm btn-icon" type="button" (click)="onDelete(p.matricule)" aria-label="Supprimer"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="filteredPayments.length === 0" class="empty-state">
+        <div class="empty-icon">💸</div>
+        <h3>Aucun paiement trouvé</h3>
+        <p>Aucun paiement ne correspond à vos filtres.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD MODAL -->
+<app-payment-add *ngIf="showAddModal" (close)="showAddModal = false" (save)="onPaymentCreated($any($event))"></app-payment-add>
+
+<!-- EDIT MODAL -->
+<div class="sp-modal-overlay" *ngIf="showEditModal" (click)="showEditModal = false">
+  <div class="sp-modal lg" (click)="$event.stopPropagation()" *ngIf="selectedPayment">
+    <div class="sp-modal-header">
+      <h5 class="sp-modal-title">Modifier le paiement</h5>
+      <button type="button" class="btn btn-ghost btn-sm btn-icon" (click)="showEditModal = false" aria-label="Fermer">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="sp-modal-body">
+      <form>
+        <div class="row g-3">
+          <div class="col-md-6 sp-field"><label class="form-label">Employé</label><input class="form-input" type="text" [value]="selectedPayment.fullPersonnelName" disabled></div>
+          <div class="col-md-6 sp-field"><label class="form-label">Matricule</label><input class="form-input" type="text" [value]="selectedPayment.matricule" disabled></div>
+          <div class="col-md-6 sp-field"><label class="form-label">Période</label><input class="form-input" type="text" [value]="selectedPayment.month + '/' + selectedPayment.year" disabled></div>
+          <div class="col-md-6 sp-field">
+            <label class="form-label">Statut</label>
+            <ng-container *ngIf="!isDisciplineCase(selectedPayment); else disciplineStatus">
+              <select class="form-input" [(ngModel)]="selectedPayment.status" name="status">
+                <option value="PENDING">En attente</option>
+                <option value="PAID">Payé</option>
+              </select>
+            </ng-container>
+            <ng-template #disciplineStatus>
+              <input class="form-input" type="text" value="Conseil de discipline" disabled>
+            </ng-template>
+          </div>
+          <div class="col-md-6 sp-field"><label class="form-label">Salaire de Base (TND)</label><input class="form-input" type="number" [(ngModel)]="selectedPayment.salaireBase" name="salaireBase"></div>
+          <div class="col-md-6 sp-field"><label class="form-label">RIB</label><input class="form-input" type="text" [(ngModel)]="selectedPayment.rib" name="rib"></div>
+          <div class="col-md-6 sp-field"><label class="form-label">Déduction Absences (TND)</label><input class="form-input" type="number" [(ngModel)]="selectedPayment.deductionsAbsence" name="deductionsAbsence" disabled></div>
+          <div class="col-md-6 sp-field"><label class="form-label">CNSS (TND)</label><input class="form-input" type="number" [(ngModel)]="selectedPayment.montantCnss" name="montantCnss" disabled></div>
+          <div class="col-md-6 sp-field"><label class="form-label">IRPP (TND)</label><input class="form-input" type="number" [(ngModel)]="selectedPayment.montantIrpp" name="montantIrpp" disabled></div>
+          <div class="col-md-6 sp-field"><label class="form-label">Net à Payer (TND)</label><input class="form-input fw-bold" type="number" [(ngModel)]="selectedPayment.finalAmount" name="finalAmount" disabled></div>
+        </div>
+      </form>
+    </div>
+    <div class="sp-modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="showEditModal = false">Annuler</button>
+      <button type="button" class="btn btn-primary" (click)="savePaymentUpdate(selectedPayment)">Enregistrer</button>
+    </div>
+  </div>
+</div>

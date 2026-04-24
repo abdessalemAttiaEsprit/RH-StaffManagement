@@ -1,0 +1,35 @@
+:host {
+	display: block;
+}
+
+.pr-table-meta {
+	margin: 8px 0 12px;
+	color: var(--muted);
+	font-size: 0.9rem;
+}
+
+.pr-table-wrap {
+	overflow-x: auto;
+}
+
+.pr-actions {
+	display: inline-flex;
+	gap: 8px;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.btn-sm {
+	padding: 8px 10px;
+	border-radius: 10px;
+	font-size: 0.85rem;
+}
+
+.btn-icon {
+	width: 36px;
+	height: 36px;
+	padding: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}

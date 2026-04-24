@@ -1,0 +1,164 @@
+<div class="page-content">
+  <div class="sp-hero">
+    <div>
+      <h1><i class="bi bi-gear"></i> Paramètres de l'Entreprise</h1>
+      <p>Configuration centralisée de SmartPark</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button *ngIf="!isEditing" class="btn btn-primary" (click)="enableEditing()">
+        <i class="bi bi-pencil"></i>
+        Éditer
+      </button>
+      <button *ngIf="isEditing" class="btn btn-secondary" (click)="cancelEditing()">
+        <i class="bi bi-x-lg"></i>
+        Annuler
+      </button>
+    </div>
+  </div>
+    <!-- Messages -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      <i class="bi bi-check-circle"></i>
+      <p>{{ successMessage }}</p>
+      <button class="sp-btn-icon" type="button" (click)="successMessage = ''" aria-label="Fermer">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-error">
+      <i class="bi bi-exclamation-triangle"></i>
+      <p>{{ errorMessage }}</p>
+      <button class="sp-btn-icon" type="button" (click)="errorMessage = ''" aria-label="Fermer">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <!-- Main Card -->
+    <div class="sp-card">
+      <div class="section-header">
+        <div class="section-title"><i class="bi bi-info-circle"></i> Informations de l'Entreprise</div>
+      </div>
+      <p class="cs-subtitle">Gérez les paramètres généraux de votre organisation.</p>
+
+      <div class="cs-card-body">
+        <div class="sp-grid-col-3">
+          <!-- Logo Section -->
+          <div class="sp-v-stack sp-grid-col-span-1">
+            <label class="sp-label">Logo de l'Entreprise</label>
+            <div class="sp-logo-uploader">
+              <img *ngIf="logoPreview" [src]="logoPreview" alt="Aperçu du logo">
+              <div *ngIf="!logoPreview" class="sp-logo-placeholder">
+                <i class="bi bi-image"></i>
+                <span>Aucun logo</span>
+              </div>
+            </div>
+            <div *ngIf="isEditing" class="sp-grid-col-2">
+              <input type="file" #logoInput hidden accept="image/*" (change)="onLogoSelected($event)">
+              <button class="btn btn-secondary" type="button" (click)="logoInput.click()">
+                <i class="bi bi-upload"></i> Télécharger
+              </button>
+              <button *ngIf="logoPreview" class="btn btn-danger cs-btn-icon" type="button" (click)="removeLogo()" aria-label="Supprimer le logo">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+
+            <div class="mt-3"></div>
+
+            <label class="sp-label">Signature numérique</label>
+            <div class="sp-logo-uploader">
+              <img *ngIf="signaturePreview" [src]="signaturePreview" alt="Aperçu de la signature">
+              <div *ngIf="!signaturePreview" class="sp-logo-placeholder">
+                <i class="bi bi-image"></i>
+                <span>Aucune signature</span>
+              </div>
+            </div>
+            <div *ngIf="isEditing" class="sp-grid-col-2">
+              <input type="file" #signatureInput hidden accept="image/*" (change)="onSignatureSelected($event)">
+              <button class="btn btn-secondary" type="button" (click)="signatureInput.click()">
+                <i class="bi bi-upload"></i> Télécharger
+              </button>
+              <button *ngIf="signaturePreview" class="btn btn-danger cs-btn-icon" type="button" (click)="removeSignature()" aria-label="Supprimer la signature">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Form Section -->
+          <div class="sp-v-stack sp-grid-col-span-2">
+            <div class="sp-grid-col-2">
+              <div class="sp-field">
+                <label class="form-label" for="companyName">Nom de l'Entreprise</label>
+                <input class="form-input" id="companyName" type="text" [(ngModel)]="settings.companyName" [disabled]="!isEditing" placeholder="Ex: SmartPark Tunisie">
+              </div>
+              <div class="sp-field">
+                <label class="form-label" for="matriculeFiscal">Matricule Fiscal</label>
+                <input class="form-input" id="matriculeFiscal" type="text" [(ngModel)]="settings.matriculeFiscal" [disabled]="!isEditing" placeholder="Ex: 1234567890">
+              </div>
+              <div class="sp-field">
+                <label class="form-label" for="phone">Téléphone</label>
+                <input class="form-input" id="phone" type="tel" [(ngModel)]="settings.phone" [disabled]="!isEditing" placeholder="Ex: +216 XX XXX XXX">
+              </div>
+              <div class="sp-field">
+                <label class="form-label" for="address">Adresse</label>
+                <input class="form-input" id="address" type="text" [(ngModel)]="settings.address" [disabled]="!isEditing" placeholder="Ex: Rue de l'Innovation, Tunis">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div *ngIf="isEditing" class="cs-card-footer">
+        <button class="btn btn-secondary" type="button" (click)="cancelEditing()">Annuler</button>
+        <button class="btn btn-primary" type="button" (click)="saveSettings()" [disabled]="isLoading || !settings.companyName.trim()">
+          <span *ngIf="!isLoading"><i class="bi bi-save"></i> Enregistrer</span>
+          <span *ngIf="isLoading" class="sp-spinner-in-btn">
+            <span class="sp-spinner"></span> Enregistrement...
+          </span>
+        </button>
+      </div>
+
+      <!-- Read-only Mode -->
+      <div *ngIf="!isEditing" class="sp-card-box">
+        <div class="sp-grid-col-2">
+          <div class="sp-v-stack">
+            <div class="sp-info-field">
+              <label>Nom</label>
+              <span>{{ settings.companyName || '-' }}</span>
+            </div>
+            <div class="sp-info-field">
+              <label>Matricule Fiscal</label>
+              <span>{{ settings.matriculeFiscal || '-' }}</span>
+            </div>
+          </div>
+          <div class="sp-v-stack">
+            <div class="sp-info-field">
+              <label>Téléphone</label>
+              <span>{{ settings.phone || '-' }}</span>
+            </div>
+            <div class="sp-info-field">
+              <label>Adresse</label>
+              <span>{{ settings.address || '-' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Info -->
+    <div class="sp-grid-col-2 sp-mt">
+      <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i>
+        <div class="sp-alert-content">
+          <h4 class="sp-alert-title">À Propos</h4>
+          <p>Ces paramètres sont utilisés dans tous les documents générés (factures, fiches de paie, etc.).</p>
+        </div>
+      </div>
+      <div class="alert alert-success">
+        <i class="bi bi-shield-check"></i>
+        <div class="sp-alert-content">
+          <h4 class="sp-alert-title">Sécurité</h4>
+          <p>Les modifications sont enregistrées de manière sécurisée et sont accessibles à tous les administrateurs.</p>
+        </div>
+      </div>
+    </div>
+</div>
+

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
-import { authGuard, adminGuard } from './guards/auth.guard';
+import { authGuard, adminGuard, userGuard } from './guards/auth.guard';
+
 
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
@@ -14,6 +15,19 @@ import { UserPlanningComponent } from './pages/user/user-planning/user-planning.
 import { ChatbotComponent } from './pages/chatbot/chatbot.component';
 import { UserParametresComponent } from './pages/user/user-parametres/user-parametres.component';
 import { TarificationComponent } from './pages/tarification/tarification.component'; // ✅ AJOUTÉ
+//------ `mon_projet_rh` ------
+import { PersonnelListComponent } from './mon_projet_rh/rh/personnel/personnel-list/personnel-list.component';
+import { PersonnelFormComponent } from './mon_projet_rh/rh/personnel/personnel-form/personnel-form.component';
+import { AbsencesListComponent } from './mon_projet_rh/rh/personnel/absence-list/absences-list.component';
+import { PaymentListComponent } from './mon_projet_rh/rh/payment/payment-list.component';
+import { CompanySettingsComponent } from './mon_projet_rh/adminRH/company-settings/company-settings.component';
+import { JobPostingsComponent } from './mon_projet_rh/recruitment/job-postings/job-postings.component';
+import { CareersComponent } from './mon_projet_rh/recruitment/careers/careers.component';
+import { ApplyJobComponent } from './mon_projet_rh/recruitment/apply-job/apply-job.component';
+import { AdminDashboardComponent } from './mon_projet_rh/adminRH/admin-dashboard/admin-dashboard.component';
+import { ApplicationsListComponent } from './mon_projet_rh/recruitment/applications-list/applications-list.component';
+import { PersonnelPortalComponent } from './mon_projet_rh/personnel/personnel-portal/personnel-portal.component';
+//------------------------------------------------
 //import { ChatbotComponent } from
   './pages/ia/chatbot/chatbot.component';
 //import { IaDashboardComponent } from
@@ -115,12 +129,31 @@ export const routes: Routes = [
   canActivate: [authGuard]
 },
 
-
-  // ── Chatbot ────────────────────────────────────────
+  // ── RH (mon_projet_rh) ─────────────────────────────
   {
-    path: 'chatbot',
-    component: ChatbotComponent,
-    canActivate: [authGuard]
+    path: 'rh',
+    canActivate: [authGuard],
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: AdminDashboardComponent, canActivate: [adminGuard] },
+
+      // Accessible USER (auth uniquement)
+      { path: 'espace-personnel', component: PersonnelPortalComponent,canActivate: [userGuard] },
+      { path: 'carrieres', component: CareersComponent ,canActivate: [userGuard]},
+      { path: 'candidature/:jobId', component: ApplyJobComponent },
+
+      // Admin-only RH management
+      { path: 'personnel', component: PersonnelListComponent, canActivate: [adminGuard] },
+      { path: 'personnel/paiements', component: PaymentListComponent, canActivate: [adminGuard] },
+      { path: 'personnel/nouveau', component: PersonnelFormComponent, canActivate: [adminGuard] },
+      { path: 'personnel/absences', component: AbsencesListComponent, canActivate: [adminGuard] },
+      { path: 'personnel/modifier/:matricule', component: PersonnelFormComponent, canActivate: [adminGuard] },
+
+      { path: 'admin/parametres', component: CompanySettingsComponent, canActivate: [adminGuard] },
+
+      { path: 'recrutement/offres', component: JobPostingsComponent, canActivate: [adminGuard] },
+      { path: 'recrutement/candidatures/:jobId', component: ApplicationsListComponent, canActivate: [adminGuard] }
+    ]
   },
 
   // ── Wildcard ───────────────────────────────────────

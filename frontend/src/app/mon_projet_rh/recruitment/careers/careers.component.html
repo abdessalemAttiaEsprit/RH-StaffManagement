@@ -1,0 +1,75 @@
+
+  <div class="page-content">
+    <div class="sp-hero">
+      <div>
+        <h1>Rejoignez <span>SmartPark</span></h1>
+        <p>Faites partie de notre équipe innovante et dynamique.</p>
+      </div>
+    </div>
+
+    <div class="sp-card mb-4">
+      <div class="section-header">
+        <div class="section-title"><i class="bi bi-funnel"></i> Filtres</div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Rechercher</label>
+          <input type="text" class="form-input" placeholder="Rechercher un poste..." [(ngModel)]="searchText" (input)="applyFilters()">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Département</label>
+          <select class="form-input" [(ngModel)]="filterDepartment" (change)="applyFilters()">
+            <option value="ALL">Tous les départements</option>
+            <option *ngFor="let dept of availableDepartments" [value]="dept">{{ dept }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="empty-state">
+      <div class="empty-icon">⏳</div>
+      <h3>Chargement</h3>
+      <p>Récupération des offres...</p>
+    </div>
+
+    <div *ngIf="!isLoading && filteredPostings.length === 0" class="empty-state">
+      <div class="empty-icon">🤷</div>
+      <h3>Aucune offre trouvée</h3>
+      <p>Aucune offre d'emploi ne correspond à votre recherche pour le moment.</p>
+    </div>
+
+    <div *ngIf="!isLoading && filteredPostings.length > 0" class="row g-4">
+      <div *ngFor="let posting of filteredPostings" class="col-md-6 col-lg-4">
+        <div class="sp-card h-100 rc-click" (click)="selectPosting(posting)">
+          <div class="section-header">
+            <div class="section-title">{{ posting.title }}</div>
+            <span class="badge" [ngClass]="getStatusClass(posting.status)">{{ posting.status }}</span>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <span class="badge badge-purple"><i class="bi bi-building"></i> {{ posting.department }}</span>
+            <span class="badge badge-blue"><i class="bi bi-briefcase"></i> {{ posting.jobType }}</span>
+          </div>
+
+          <p class="small mb-3 line-clamp-3">{{ posting.description }}</p>
+
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <span *ngFor="let skill of (posting.requiredSkills | slice:0:3)" class="badge badge-purple">{{ skill }}</span>
+            <span *ngIf="posting.requiredSkills.length > 3" class="badge badge-blue">+{{ posting.requiredSkills.length - 3 }}</span>
+          </div>
+
+          <div class="rc-meta">
+            <span><i class="bi bi-cash-coin"></i> {{ posting.salaryMin | number }} - {{ posting.salaryMax | number }} DT</span>
+            <span><i class="bi bi-calendar-event"></i> {{ posting.deadline | date:'dd/MM/yy' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-job-posting-detail-modal
+      [posting]="selectedPosting"
+      (close)="closeDetail()"
+      (apply)="applyJob($event)"
+    ></app-job-posting-detail-modal>
+  </div>

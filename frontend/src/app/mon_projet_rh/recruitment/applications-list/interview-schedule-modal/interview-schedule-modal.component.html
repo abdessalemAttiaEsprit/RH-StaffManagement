@@ -1,0 +1,42 @@
+<ng-container>
+  <div class="sp-modal-overlay" (click)="onClose()">
+    <div class="sp-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <div class="sp-modal-header">
+        <h5 class="sp-modal-title">Programmer un entretien</h5>
+        <button type="button" class="btn btn-ghost btn-icon" (click)="onClose()" aria-label="Fermer">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="sp-modal-body">
+        <div class="alert alert-info" *ngIf="application">
+          <i class="bi bi-info-circle"></i>
+          <div>
+            <strong>{{ application.candidateName || 'Candidat' }}</strong>
+            <span *ngIf="application.jobTitle"> • {{ application.jobTitle }}</span>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6 sp-field">
+            <label class="form-label">Date</label>
+            <input class="form-input" type="date" [(ngModel)]="form.date">
+          </div>
+          <div class="col-md-6 sp-field">
+            <label class="form-label">Heure</label>
+            <input class="form-input" type="time" [(ngModel)]="form.time">
+          </div>
+          <div class="col-12 sp-field">
+            <label class="form-label">Lieu</label>
+            <input class="form-input" type="text" [(ngModel)]="form.location" placeholder="Ex: Bureau RH, Visio...">
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-modal-footer">
+        <button class="btn btn-ghost" type="button" (click)="onClose()">Annuler</button>
+        <button class="btn btn-primary" type="button" (click)="onConfirm()">Confirmer</button>
+      </div>
+    </div>
+  </div>
+</ng-container>

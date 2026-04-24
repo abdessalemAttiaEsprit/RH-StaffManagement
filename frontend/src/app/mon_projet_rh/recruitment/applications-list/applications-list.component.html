@@ -1,0 +1,207 @@
+<div class="page-content">
+  <div class="sp-hero">
+    <div>
+      <button class="btn btn-ghost btn-sm" type="button" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i>
+        Retour
+      </button>
+      <h1>Gestion des <span>Candidatures</span></h1>
+      <p *ngIf="jobPosting"><strong>{{ jobPosting.title }}</strong> • {{ jobPosting.department }}</p>
+    </div>
+  </div>
+
+  <div class="sp-card rh-subnav" aria-label="Navigation RH">
+    <a
+      class="rh-subnav-link"
+      routerLink="/rh/personnel"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Personnels</a>
+    <a
+      class="rh-subnav-link"
+      routerLink="/rh/personnel/absences"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Absences</a>
+    <a
+      class="rh-subnav-link"
+      routerLink="/rh/personnel/paiements"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Paiements</a>
+    <a
+      class="rh-subnav-link"
+      routerLink="/rh/recrutement/offres"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Offres & Candidatures</a>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-error" role="alert">
+    <i class="bi bi-exclamation-triangle"></i>
+    <div>{{ errorMessage }}</div>
+  </div>
+
+  <div *ngIf="isLoading" class="empty-state">
+    <div class="empty-icon">⏳</div>
+    <h3>Chargement</h3>
+    <p>Récupération des candidatures...</p>
+  </div>
+
+  <div *ngIf="!isLoading && applications.length === 0" class="empty-state">
+    <div class="empty-icon">📭</div>
+    <h3>Aucune candidature</h3>
+    <p>Il n'y a pas encore de candidats pour cette offre.</p>
+  </div>
+
+  <div *ngIf="!isLoading && applications.length > 0">
+    <div class="sp-card mb-4">
+      <div class="section-header">
+        <div class="section-title"><i class="bi bi-calendar-check"></i> Entretiens programmés</div>
+        <span class="badge badge-blue">{{ interviewsToDisplay.length }}</span>
+      </div>
+
+      <div *ngIf="interviewsToDisplay.length === 0" class="alert alert-info">
+        <i class="bi bi-info-circle"></i>
+        <div>Aucun entretien programmé. Cliquez sur “Entretien” pour en planifier un.</div>
+        <div class="mt-2">
+          <button class="btn btn-ghost btn-sm" type="button" (click)="refreshData()" [disabled]="isLoading">
+            <i class="bi bi-arrow-clockwise"></i>
+            Actualiser
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="interviewsToDisplay.length > 0" class="rj-table-wrap">
+        <table class="sp-table">
+          <thead>
+            <tr>
+              <th>Candidat</th>
+              <th>Date & Heure</th>
+              <th>Lieu</th>
+              <th>Score AI</th>
+              <th>Durée restante</th>
+              <th>CV</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let app of interviewsToDisplay" [class.rj-row-soon]="isInterviewSoon(app)">
+              <td>
+                <div class="small fw-semibold">{{ app.candidateName }}</div>
+                <div class="small rj-muted">{{ app.candidateEmail }}</div>
+              </td>
+              <td>{{ app.interviewDate | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td><span class="badge badge-purple">{{ app.interviewLocation || 'N/A' }}</span></td>
+              <td>
+                <span *ngIf="app.aiScore !== null && app.aiScore !== undefined" class="badge" [ngClass]="getAIScoreClass(app.aiScore)">{{ app.aiScore }}/100</span>
+                <span *ngIf="app.aiScore === null || app.aiScore === undefined" class="small rj-muted">-</span>
+
+                <div *ngIf="app.aiFeedback" class="small rj-pre mt-2">{{ app.aiFeedback }}</div>
+              </td>
+              <td>
+                <span class="badge" [ngClass]="isInterviewSoon(app) ? 'badge-red' : 'badge-blue'">{{ getTimeUntilInterview(app) }}</span>
+              </td>
+              <td>
+                <div class="rj-btn-row">
+                  <button *ngIf="app.cvFileId" class="btn btn-ghost btn-sm btn-icon" type="button" (click)="openCV(app)" title="Ouvrir CV" aria-label="Ouvrir CV"><i class="bi bi-paperclip"></i></button>
+                  <button *ngIf="app.cvFileId" class="btn btn-ghost btn-sm btn-icon" type="button" (click)="downloadCV(app)" title="Télécharger CV" aria-label="Télécharger CV"><i class="bi bi-download"></i></button>
+                  <span *ngIf="!app.cvFileId" class="small rj-muted">-</span>
+                </div>
+              </td>
+              <td>
+                <div class="rj-btn-row">
+                  <button class="btn btn-secondary btn-sm btn-icon" type="button" (click)="addToEmployees(app)" title="Ajouter aux employés" aria-label="Ajouter aux employés"><i class="bi bi-check-lg"></i></button>
+                  <button class="btn btn-secondary btn-sm btn-icon" type="button" (click)="scheduleInterview(app)" title="Modifier l'entretien" aria-label="Modifier l'entretien"><i class="bi bi-pencil"></i></button>
+                  <button class="btn btn-danger btn-sm btn-icon" type="button" (click)="deleteInterview(app)" title="Supprimer l'entretien" aria-label="Supprimer l'entretien"><i class="bi bi-trash"></i></button>
+                  <button class="btn btn-danger btn-sm btn-icon" type="button" (click)="deleteApplicationFromInterview(app)" title="Supprimer la candidature" aria-label="Supprimer la candidature"><i class="bi bi-person-x"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sp-card">
+      <div class="section-header">
+        <div class="section-title"><i class="bi bi-list-check"></i> Toutes les candidatures</div>
+        <span class="badge badge-blue">{{ applications.length }}</span>
+      </div>
+
+      <div class="stats-grid mb-4">
+        <div class="stat-card blue">
+          <div class="stat-label">Total</div>
+          <div class="stat-value blue">{{ applications.length }}</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Acceptés</div>
+          <div class="stat-value green">{{ countStatus('SHORTLISTED') }}</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-label">En révision</div>
+          <div class="stat-value amber">{{ countStatus('UNDER_REVIEW') }}</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-label">Rejetés</div>
+          <div class="stat-value red">{{ countStatus('REJECTED') }}</div>
+        </div>
+      </div>
+
+      <div class="rj-table-wrap">
+        <table class="sp-table">
+          <thead>
+            <tr>
+              <th>Candidat</th>
+              <th>Email</th>
+              <th>Score AI</th>
+              <th>Statut</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let app of applications">
+              <td>{{ app.candidateName }}</td>
+              <td class="rj-muted">{{ app.candidateEmail }}</td>
+              <td>
+                <span *ngIf="app.aiScore !== null && app.aiScore !== undefined" class="badge" [ngClass]="getAIScoreClass(app.aiScore)">{{ app.aiScore }}/100</span>
+                <span *ngIf="app.aiScore === null || app.aiScore === undefined" class="small rj-muted">-</span>
+
+                <div *ngIf="app.aiFeedback" class="small rj-pre mt-2">{{ app.aiFeedback }}</div>
+              </td>
+              <td>
+                <span class="badge" [ngClass]="getApplicationStatusClass(app.status)">{{ app.status | titlecase }}</span>
+              </td>
+              <td class="text-end">
+                <div class="rj-btn-row rj-btn-row-end">
+                  <button class="btn btn-ghost btn-sm btn-icon" type="button" (click)="showApplicationDetails(app)" title="Voir les détails" aria-label="Voir les détails"><i class="bi bi-eye"></i></button>
+                  <button class="btn btn-secondary btn-sm btn-icon" type="button" (click)="scheduleInterview(app)" title="Programmer un entretien" aria-label="Programmer un entretien"><i class="bi bi-calendar-plus"></i></button>
+                  <button *ngIf="app.status !== 'SHORTLISTED'" class="btn btn-secondary btn-sm btn-icon" type="button" (click)="acceptCandidate(app)" title="Accepter" aria-label="Accepter"><i class="bi bi-check-lg"></i></button>
+                  <button *ngIf="app.status !== 'REJECTED'" class="btn btn-danger btn-sm btn-icon" type="button" (click)="rejectCandidate(app)" title="Rejeter" aria-label="Rejeter"><i class="bi bi-x-lg"></i></button>
+                  <button class="btn btn-danger btn-sm btn-icon" type="button" (click)="deleteApplication(app)" title="Supprimer" aria-label="Supprimer"><i class="bi bi-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Details Modal (Component) -->
+<app-application-details-modal
+  *ngIf="showDetailsModal"
+  [application]="selectedApplicationForDetails"
+  (close)="closeDetailsModal()"
+></app-application-details-modal>
+
+<!-- Interview Modal (Component) -->
+<app-interview-schedule-modal
+  *ngIf="showInterviewModal"
+  [application]="selectedApplicationForInterview"
+  [initialData]="interviewModalInitialData"
+  (close)="closeInterviewModal()"
+  (confirm)="onInterviewConfirm($event)"
+></app-interview-schedule-modal>
+

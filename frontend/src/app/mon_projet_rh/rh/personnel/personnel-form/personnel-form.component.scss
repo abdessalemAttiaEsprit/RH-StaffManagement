@@ -1,0 +1,33 @@
+
+:host {
+  display: block;
+}
+
+.pf-sticky {
+  position: sticky;
+  top: 1.5rem;
+}
+
+.pf-hint {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.pf-subtitle {
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+
+.pf-loader {
+  padding: 2rem;
+  text-align: center;
+  color: var(--muted);
+}
+
+.pf-loader .spinner-border {
+  margin-bottom: 12px;
+}

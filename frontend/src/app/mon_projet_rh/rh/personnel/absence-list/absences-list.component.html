@@ -1,0 +1,181 @@
+<div class="page-content">
+
+  <div class="sp-hero">
+    <div>
+      <h1>Gestion des <span>Absences</span></h1>
+      <p><span class="live-dot"></span> Suivi des congés et justifications du personnel</p>
+    </div>
+  </div>
+
+  <div class="sp-card rh-subnav" aria-label="Navigation RH">
+    <a
+      class="rh-subnav-link"
+      routerLink="/rh/personnel"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Personnels</a>
+    <a
+      class="rh-subnav-link"
+      routerLink="/rh/personnel/absences"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Absences</a>
+    <a
+      class="rh-subnav-link"
+      routerLink="/rh/personnel/paiements"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Paiements</a>
+    <a
+      class="rh-subnav-link"
+      routerLink="/rh/recrutement/offres"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Offres & Candidatures</a>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="stat-header">
+        <div class="stat-label">Total Absences</div>
+        <div class="stat-icon blue"><i class="bi bi-calendar2-week"></i></div>
+      </div>
+      <div class="stat-value blue">{{ totalAbsences }}</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-header">
+        <div class="stat-label">Acceptées</div>
+        <div class="stat-icon green"><i class="bi bi-check2-circle"></i></div>
+      </div>
+      <div class="stat-value green">{{ totalJustified }}</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-header">
+        <div class="stat-label">En Attente</div>
+        <div class="stat-icon amber"><i class="bi bi-hourglass-split"></i></div>
+      </div>
+      <div class="stat-value amber">{{ totalPending }}</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-header">
+        <div class="stat-label">Taux Justif.</div>
+        <div class="stat-icon purple"><i class="bi bi-bar-chart"></i></div>
+      </div>
+      <div class="stat-value purple">{{ justificationRate }}%</div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="sp-card mb-4">
+    <div class="section-header">
+      <div class="section-title"><i class="bi bi-funnel"></i> Filtres</div>
+    </div>
+    <div>
+      <div class="row g-3">
+        <div class="col-md-3"><input type="text" class="form-input" placeholder="Nom ou matricule..." [(ngModel)]="searchText"></div>
+        <div class="col-md-2">
+          <select class="form-input" [(ngModel)]="filterAbsenceType">
+            <option value="ALL">Tous les types</option>
+            <option *ngFor="let type of availableAbsenceTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select class="form-input" [(ngModel)]="filterAbsenceStatus">
+            <option value="ALL">Tous statuts</option>
+            <option value="PENDING">En attente</option>
+            <option value="JUSTIFIED">Acceptée</option>
+            <option value="REJECTED">Refusée</option>
+          </select>
+        </div>
+        <div class="col-md-2"><input type="date" class="form-input" [(ngModel)]="filterPeriodFrom"></div>
+        <div class="col-md-2"><input type="date" class="form-input" [(ngModel)]="filterPeriodTo"></div>
+        <div class="col-md-1">
+          <button class="btn btn-ghost w-100" type="button" (click)="resetFilters()" aria-label="Réinitialiser">
+            <i class="bi bi-arrow-clockwise"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABSENCE LIST -->
+  <div *ngFor="let item of filteredPersonnels" class="sp-card mb-4">
+    <div class="section-header">
+      <div class="section-title">
+        {{ item.personnel.nom }} {{ item.personnel.prenom }}
+        <span class="text-muted small">#{{ item.personnel.matricule }}</span>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <span class="badge badge-purple" title="Quota cumulatif restant">Quota: {{ item.personnel.absenceQuotaRemainingDays ?? 0 }} j</span>
+        <button class="btn btn-primary btn-sm" type="button" (click)="onAddAbsence(item.personnel)">
+          <i class="bi bi-plus-circle"></i>
+          Nouvelle Absence
+        </button>
+      </div>
+    </div>
+
+    <div class="al-table-wrap">
+      <table class="sp-table">
+        <thead>
+          <tr>
+            <th>Période</th>
+            <th>Type</th>
+            <th class="text-center">Statut</th>
+            <th>Justification</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let abs of item.filteredAbsences">
+            <td>{{ abs.startDate | date:'dd/MM/yy' }} - {{ abs.endDate | date:'dd/MM/yy' }}</td>
+            <td><span class="badge badge-purple">{{ abs.typeAbsence }}</span></td>
+            <td class="text-center">
+              <div *ngIf="abs.status === 'PENDING'" class="d-flex justify-content-center gap-2">
+                <button class="btn btn-primary btn-sm btn-icon" type="button" (click)="onUpdateAbsenceStatus(item.personnel, abs, 'JUSTIFIED')" aria-label="Accepter">
+                  <i class="bi bi-check2"></i>
+                </button>
+                <button class="btn btn-danger btn-sm btn-icon" type="button" (click)="onUpdateAbsenceStatus(item.personnel, abs, 'REJECTED')" aria-label="Refuser">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+              <span *ngIf="abs.status !== 'PENDING'" class="badge" [ngClass]="{'badge-green': abs.status === 'JUSTIFIED', 'badge-red': abs.status === 'REJECTED'}">
+                {{ abs.status | titlecase }}
+              </span>
+            </td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <button *ngIf="abs.justification" type="button" class="btn btn-ghost btn-sm" (click)="onDownloadFile(abs.justification)">Voir</button>
+                <button class="btn btn-ghost btn-sm btn-icon" type="button" (click)="onUploadButtonClick($event, item.personnel, abs)" aria-label="Importer">
+                  <i class="bi bi-upload"></i>
+                </button>
+              </div>
+            </td>
+            <td class="text-end">
+              <div class="al-actions">
+                <button class="btn btn-ghost btn-sm btn-icon" type="button" (click)="onEditAbsence(item.personnel, abs)" aria-label="Modifier"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-danger btn-sm btn-icon" type="button" (click)="onDeleteAbsenceRecord(item.personnel, abs)" aria-label="Supprimer"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="item.filteredAbsences.length === 0">
+            <td colspan="5" class="text-center py-4 text-muted">Aucune absence pour ce personnel.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="filteredPersonnels.length === 0" class="empty-state">
+    <div class="empty-icon">🤷</div>
+    <h3>Aucun résultat</h3>
+    <p>Aucun personnel ne correspond à vos filtres.</p>
+  </div>
+
+  <app-absence-modal 
+    *ngIf="isModalOpen && selectedPersonnelForAbsence"
+    [personnel]="selectedPersonnelForAbsence"
+    [absenceToEdit]="absenceToEdit"
+    (close)="isModalOpen = false"
+    (save)="handleSaveAbsence($event)">
+  </app-absence-modal>
+</div>

@@ -1,0 +1,56 @@
+<ng-container *ngIf="posting as p">
+  <div class="sp-modal-overlay" (click)="onClose()">
+    <div class="sp-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <div class="sp-modal-header">
+        <h5 class="sp-modal-title">{{ p.title }}</h5>
+        <button type="button" class="btn btn-ghost btn-icon" (click)="onClose()" aria-label="Fermer">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="sp-modal-body">
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <div class="form-label">Département</div>
+            <div>{{ p.department }}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-label">Type de contrat</div>
+            <div>{{ p.jobType }}</div>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <div class="form-label">Rémunération (DT)</div>
+            <div>{{ p.salaryMin | number }} - {{ p.salaryMax | number }}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-label">Date limite</div>
+            <div>{{ p.deadline | date:'dd/MM/yyyy' }}</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="form-label">Description</div>
+          <div class="rj-pre">{{ p.description }}</div>
+        </div>
+
+        <div *ngIf="p.requiredSkills?.length">
+          <div class="form-label">Compétences requises</div>
+          <div class="d-flex flex-wrap gap-2">
+            <span *ngFor="let skill of p.requiredSkills" class="badge badge-purple">{{ skill }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-modal-footer">
+        <button class="btn btn-ghost" type="button" (click)="onClose()">Fermer</button>
+        <button class="btn btn-primary" type="button" (click)="onApply()">
+          <i class="bi bi-send"></i>
+          Postuler
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>
