@@ -1,14 +1,14 @@
 <div class="page-content">
   <div class="sp-hero">
     <div>
-      <h1>Espace <span>Personnel</span></h1>
+      <h1><span>Personnel</span> Portal </h1>
       <p><span class="live-dot"></span> Absences, quota et demandes</p>
     </div>
   </div>
 
   <div class="sp-card pp-card">
     <div class="section-header">
-      <div class="section-title"><i class="bi bi-person-badge"></i> Accès</div>
+      <div class="section-title"><i class="bi bi-person-badge"></i> Acces</div>
     </div>
 
     <div class="row g-3 align-items-end">
@@ -28,7 +28,7 @@
       </div>
       <div *ngIf="loading" class="alert alert-info" role="status">
         <i class="bi bi-hourglass-split"></i>
-        <div>Chargement...</div>
+        <div>loading...</div>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@
     <div class="stats-grid">
       <div class="stat-card purple">
         <div class="stat-header">
-          <div class="stat-label">Quota absence</div>
+          <div class="stat-label">Absence Quota</div>
           <div class="stat-icon purple"><i class="bi bi-shield-check"></i></div>
         </div>
         <div class="stat-value purple">{{ personnel.absenceQuotaRemainingDays ?? 0 }}</div>
@@ -46,17 +46,17 @@
 
       <div class="stat-card blue">
         <div class="stat-header">
-          <div class="stat-label">Mes absences</div>
+          <div class="stat-label">My Absences</div>
           <div class="stat-icon blue"><i class="bi bi-calendar2-week"></i></div>
         </div>
         <div class="stat-value blue">{{ personnel.absences.length }}</div>
-        <div class="stat-sub">Historique</div>
+        <div class="stat-sub">History</div>
       </div>
     </div>
 
     <div class="sp-card pp-card">
       <div class="section-header">
-        <div class="section-title"><i class="bi bi-calendar-event"></i> Mes absences</div>
+        <div class="section-title"><i class="bi bi-calendar-event"></i> My Absences</div>
         <span class="badge badge-blue">{{ getAbsences().length }}</span>
       </div>
 
@@ -64,10 +64,10 @@
         <table class="sp-table">
           <thead>
             <tr>
-              <th>Début</th>
-              <th>Fin</th>
+              <th>Start Date</th>
+              <th>End Date</th>
               <th>Type</th>
-              <th>Statut</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -84,32 +84,32 @@
 
         <div *ngIf="getAbsences().length === 0" class="empty-state">
           <div class="empty-icon">🗓️</div>
-          <h3>Aucune absence</h3>
-          <p>Vous n'avez aucune absence enregistrée.</p>
+          <h3>No absences recorded</h3>
+          <p>You have no absences recorded.</p>
         </div>
       </div>
     </div>
 
     <div class="sp-card pp-card">
       <div class="section-header">
-        <div class="section-title"><i class="bi bi-send"></i> Demander une absence</div>
+        <div class="section-title"><i class="bi bi-send"></i> Request an Absence</div>
       </div>
 
       <div class="row g-3">
         <div class="col-md-4 sp-field">
-          <label class="form-label">Date début</label>
+          <label class="form-label">Start Date</label>
           <input class="form-input" type="date" [(ngModel)]="absenceForm.startDate">
         </div>
         <div class="col-md-4 sp-field">
-          <label class="form-label">Date fin</label>
+          <label class="form-label">End Date</label>
           <input class="form-input" type="date" [(ngModel)]="absenceForm.endDate">
         </div>
         <div class="col-md-4 sp-field">
           <label class="form-label">Type</label>
           <select class="form-input" [(ngModel)]="absenceForm.typeAbsence">
-            <option value="CONGE">CONGE</option>
-            <option value="MALADIE">MALADIE</option>
-            <option value="AUTRE">AUTRE</option>
+            <option value="CONGE">HOLIDAY</option>
+            <option value="MALADIE">ILLNESS</option>
+            <option value="AUTRE">OTHER</option>
           </select>
         </div>
       </div>
@@ -124,19 +124,19 @@
       </div>
 
       <div class="pp-actions">
-        <button class="btn btn-primary" type="button" (click)="submitAbsenceRequest()">Envoyer</button>
+        <button class="btn btn-primary" type="button" (click)="submitAbsenceRequest()">Submit Request</button>
       </div>
     </div>
 
     <div class="sp-card pp-card">
       <div class="section-header">
-        <div class="section-title"><i class="bi bi-chat-left-text"></i> Mes demandes</div>
+        <div class="section-title"><i class="bi bi-chat-left-text"></i> My Requests</div>
         <span class="badge badge-blue">{{ requests.length }}</span>
       </div>
 
       <div class="sp-field">
-        <label class="form-label">Écrire une demande</label>
-        <textarea class="form-input pp-textarea" [(ngModel)]="requestMessage" placeholder="Écrivez votre demande ici..."></textarea>
+        <label class="form-label">Write a Request</label>
+        <textarea class="form-input pp-textarea" [(ngModel)]="requestMessage" placeholder="Write your request here..."></textarea>
       </div>
 
       <div *ngIf="requestSubmitError" class="alert alert-error" role="alert">
@@ -149,7 +149,7 @@
       </div>
 
       <div class="pp-actions pp-actions-gap">
-        <button class="btn btn-primary" type="button" (click)="submitPersonnelRequest()">Envoyer</button>
+        <button class="btn btn-primary" type="button" (click)="submitPersonnelRequest()">Submit Request</button>
       </div>
 
       <div class="pp-table-wrap">
@@ -157,8 +157,8 @@
           <thead>
             <tr>
               <th>Date</th>
-              <th>Demande</th>
-              <th>Statut</th>
+              <th>Request</th>
+              <th>Status</th>
               <th class="text-end">Actions</th>
             </tr>
           </thead>
@@ -185,8 +185,8 @@
 
         <div *ngIf="requests.length === 0" class="empty-state">
           <div class="empty-icon">📝</div>
-          <h3>Aucune demande</h3>
-          <p>Vous n'avez pas encore envoyé de demande.</p>
+          <h3>No requests</h3>
+          <p>You have not submitted any requests yet.</p>
         </div>
       </div>
     </div>

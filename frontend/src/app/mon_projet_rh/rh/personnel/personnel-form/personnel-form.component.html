@@ -2,17 +2,17 @@
 
   <div class="sp-hero">
     <div>
-      <h1>{{ isEditMode ? 'Modifier le Profil' : 'Nouvel Agent' }}</h1>
+      <h1>{{ isEditMode ? 'Edit Profile' : 'New Employee' }}</h1>
       <p>
         {{ isEditMode
-          ? 'Mise à jour des informations de ' + personnelForm.value.prenom + ' ' + personnelForm.value.nom
-          : 'Remplissez les détails pour créer un nouveau dossier employé.'
+          ? 'Update the information for ' + personnelForm.value.prenom + ' ' + personnelForm.value.nom
+          : 'Fill in the details to create a new employee record.'
         }}
       </p>
     </div>
     <button type="button" class="btn btn-ghost" (click)="annuler()">
       <i class="bi bi-x-lg"></i>
-      Annuler
+      Cancel
     </button>
   </div>
 
@@ -21,40 +21,40 @@
       <div class="col-lg-8">
         <div class="sp-card mb-4">
           <div class="section-header">
-            <div class="section-title"><i class="bi bi-person-vcard"></i> Identité & Expérience</div>
+            <div class="section-title"><i class="bi bi-person-vcard"></i> Identity & Experience</div>
           </div>
 
           <div class="row g-3">
             <div class="col-md-6 sp-field">
-              <label class="form-label">Prénom</label>
+              <label class="form-label">First Name</label>
               <input class="form-input" type="text" formControlName="prenom" placeholder="Ex: Ahmed">
             </div>
             <div class="col-md-6 sp-field">
-              <label class="form-label">Nom</label>
+              <label class="form-label">Last Name</label>
               <input class="form-input" type="text" formControlName="nom" placeholder="Ex: Mansour">
             </div>
 
             <div class="col-md-6 sp-field">
-              <label class="form-label">Années d'expérience</label>
+              <label class="form-label">Years of Experience</label>
               <input class="form-input" type="number" formControlName="experienceYears">
-              <div class="pf-hint">Influence le calcul du salaire suggéré.</div>
+              <div class="pf-hint">Influence the suggested salary calculation.</div>
             </div>
             <div class="col-md-6 sp-field">
-              <label class="form-label">Matricule</label>
-              <input class="form-input" type="text" value="Généré automatiquement" readonly>
+              <label class="form-label">Employee ID</label>
+              <input class="form-input" type="text" value="Generated automatically" readonly>
             </div>
 
             <div class="col-md-6 sp-field">
-              <label class="form-label">CIN (8 chiffres)</label>
+              <label class="form-label">CIN (8 digits)</label>
               <input class="form-input" type="text" formControlName="cin" placeholder="01234567">
             </div>
             <div class="col-md-6 sp-field">
-              <label class="form-label">Email Professionnel</label>
+              <label class="form-label">Professional Email</label>
               <input class="form-input" type="email" formControlName="email" placeholder="ahmed@smartpark.tn">
             </div>
 
             <div class="col-md-6 sp-field">
-              <label class="form-label">Téléphone</label>
+              <label class="form-label">Phone</label>
               <input class="form-input" type="text" formControlName="telephone" placeholder="+216 ...">
             </div>
             <div class="col-md-6 sp-field">
@@ -71,29 +71,29 @@
 
         <div class="sp-card" formGroupName="contrat">
           <div class="section-header">
-            <div class="section-title"><i class="bi bi-file-earmark-text"></i> Contrat & Rémunération</div>
+            <div class="section-title"><i class="bi bi-file-earmark-text"></i> Contract & Compensation</div>
           </div>
 
           <div class="row g-3">
             <div class="col-md-8 sp-field">
-              <label class="form-label">Rôle / Poste</label>
+              <label class="form-label">Role / Post</label>
               <select class="form-input" formControlName="role">
-                <option value="">Sélectionnez un poste...</option>
-                <option value="DEVELOPER">Développeur</option>
+                <option value="">Choose a post...</option>
+                <option value="DEVELOPER">Senior Developer</option>
                 <option value="MANAGER">Manager</option>
-                <option value="TECHNICIEN">Technicien / Maintenance</option>
-                <option value="COACH_SPORTIF">Coach Sportif</option>
-                <option value="SELLER">Vendeur</option>
-                <option value="AGENT_PARKING">Agent de Parking</option>
-                <option value="EVENT_PLANNER">Planificateur d'Événements</option>
-                <option value="CLEANING_MAINTENANCE">Entretien et Nettoyage</option>
-                <option value="OTHER">Autre</option>
+                <option value="TECHNICIEN">Technician / Maintenance</option>
+                <option value="COACH_SPORTIF">Sports Coach</option>
+                <option value="SELLER">Sales Associate</option>
+                <option value="AGENT_PARKING">Parking Agent</option>
+                <option value="EVENT_PLANNER">Event Planner</option>
+                <option value="CLEANING_MAINTENANCE">Cleaning & Maintenance</option>
+                <option value="OTHER">Other</option>
               </select>
             </div>
             <div class="col-md-4 sp-field">
-              <label class="form-label">Type de Contrat</label>
+              <label class="form-label">Contract Type</label>
               <select class="form-input" formControlName="typeContrat">
-                <option [ngValue]="null">Non spécifié</option>
+                <option [ngValue]="null">Not specified</option>
                 <option value="CDI">CDI</option>
                 <option value="CDD">CDD</option>
                 <option value="SIVP">SIVP</option>
@@ -102,41 +102,41 @@
             </div>
 
             <div class="col-12 sp-field" *ngIf="personnelForm.get('contrat.role')?.value === 'OTHER'">
-              <label class="form-label">Précisez le poste</label>
-              <input class="form-input" type="text" formControlName="roleAutre" placeholder="Ex: Responsable support, Agent accueil...">
+              <label class="form-label">Specify the position</label>
+              <input class="form-input" type="text" formControlName="roleAutre" placeholder="Ex: Support Manager, Receptionist...">
             </div>
 
             <div class="col-md-4 sp-field">
-              <label class="form-label">Salaire de Base (TND)</label>
+              <label class="form-label">Base Salary (TND)</label>
               <input class="form-input" type="number" formControlName="salaireBase">
             </div>
             <div class="col-md-4 sp-field">
-              <label class="form-label">Date d'Entrée</label>
+              <label class="form-label">Start Date</label>
               <input class="form-input" type="date" formControlName="dateDebut">
             </div>
             <div class="col-md-4 sp-field">
-              <label class="form-label">Date de Fin</label>
+              <label class="form-label">End Date</label>
               <input class="form-input" type="date" formControlName="dateFin">
             </div>
             <div class="col-md-4 sp-field">
-              <label class="form-label">Taux Heure Sup</label>
+              <label class="form-label">Overtime Rate</label>
               <input class="form-input" type="number" formControlName="tauxHoraireSup">
             </div>
           </div>
 
           <div class="mt-4" formGroupName="avantages">
-            <div class="pf-subtitle">Suggestions Primes Mensuelles</div>
+            <div class="pf-subtitle">Suggestions for Mensually Primes </div>
             <div class="row g-3">
               <div class="col-md-4 sp-field">
                 <label class="form-label">Transport</label>
                 <input class="form-input" type="number" formControlName="primeTransport">
               </div>
               <div class="col-md-4 sp-field">
-                <label class="form-label">Risque</label>
+                <label class="form-label">Risk</label>
                 <input class="form-input" type="number" formControlName="primeRisque">
               </div>
               <div class="col-md-4 sp-field">
-                <label class="form-label">Panier</label>
+                <label class="form-label">Meal Allowance</label>
                 <input class="form-input" type="number" formControlName="panier">
               </div>
             </div>
@@ -154,29 +154,29 @@
             <div class="alert alert-info">
               <i class="bi bi-info-circle"></i>
               <div>
-                Le salaire et les primes sont suggérés par l'IA selon le rôle, l'expérience et le type de contrat.
+                The salary and allowances are suggested by the AI based on the role, experience, and contract type.
                 <div class="mt-2">
                   <strong>AI Score (CV)</strong> : {{ aiScore }}/100
-                  <span *ngIf="aiScoreIsDefault" class="text-muted">(par défaut)</span>
+                  <span *ngIf="aiScoreIsDefault" class="text-muted">(default)</span>
                 </div>
               </div>
             </div>
 
             <button type="submit" class="btn btn-primary w-100 mb-2" [disabled]="personnelForm.invalid">
               <i class="bi bi-check-circle"></i>
-              {{ isEditMode ? 'Mettre à jour' : 'Enregistrer Dossier' }}
+              {{ isEditMode ? 'Update' : 'Save File' }}
             </button>
-            <button type="button" class="btn btn-ghost w-100" (click)="annuler()">Annuler</button>
+            <button type="button" class="btn btn-ghost w-100" (click)="annuler()">Cancel</button>
 
             <div *ngIf="personnelForm.invalid && personnelForm.touched" class="alert alert-error mt-3">
               <i class="bi bi-exclamation-triangle"></i>
-              <div>Veuillez vérifier les champs requis.</div>
+              <div>Please check the required fields.</div>
             </div>
           </div>
 
           <div class="alert alert-success mt-3">
             <i class="bi bi-shield-check"></i>
-            <div>Les données sont sécurisées et indexées.</div>
+            <div>The data is secured and indexed.</div>
           </div>
         </div>
       </div>

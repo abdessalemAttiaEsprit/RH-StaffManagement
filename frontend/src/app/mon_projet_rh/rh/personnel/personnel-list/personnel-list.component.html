@@ -2,67 +2,40 @@
 
   <div class="sp-hero">
     <div>
-      <h1>Gestion des <span>Agents</span></h1>
-      <p><span class="live-dot"></span> Interface de gestion du personnel SmartPark</p>
+      <h1>Manage your <span>Agents</span></h1>
+      <p><span class="live-dot"></span> Human Resources Personnel Management Interface</p>
     </div>
     <a class="btn btn-primary" routerLink="/rh/personnel/nouveau">
       <i class="bi bi-plus-lg"></i>
-      Ajouter un Agent
+       Add Agent
     </a>
-  </div>
-
-  <div class="sp-card rh-subnav" aria-label="Navigation RH">
-    <a
-      class="rh-subnav-link"
-      routerLink="/rh/personnel"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >Personnels</a>
-    <a
-      class="rh-subnav-link"
-      routerLink="/rh/personnel/absences"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >Absences</a>
-    <a
-      class="rh-subnav-link"
-      routerLink="/rh/personnel/paiements"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >Paiements</a>
-    <a
-      class="rh-subnav-link"
-      routerLink="/rh/recrutement/offres"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >Offres & Candidatures</a>
   </div>
 
   <div class="stats-grid">
     <div class="stat-card blue">
       <div class="stat-header">
-        <div class="stat-label">Total Agents</div>
+        <div class="stat-label">All Agents</div>
         <div class="stat-icon blue"><i class="bi bi-people"></i></div>
       </div>
       <div class="stat-value blue">{{ totalAgents }}</div>
     </div>
     <div class="stat-card green">
       <div class="stat-header">
-        <div class="stat-label">Agents Actifs</div>
+        <div class="stat-label">Active Agents</div>
         <div class="stat-icon green"><i class="bi bi-check2-circle"></i></div>
       </div>
       <div class="stat-value green">{{ totalActifs }}</div>
     </div>
     <div class="stat-card amber">
       <div class="stat-header">
-        <div class="stat-label">En Congé / Absents</div>
+        <div class="stat-label">Absent & In Holiday </div>
         <div class="stat-icon amber"><i class="bi bi-calendar2-x"></i></div>
       </div>
       <div class="stat-value amber">{{ totalEnConge }}</div>
     </div>
     <div class="stat-card red">
       <div class="stat-header">
-        <div class="stat-label">Taux Absence</div>
+        <div class="stat-label">Absence statistics</div>
         <div class="stat-icon red"><i class="bi bi-exclamation-triangle"></i></div>
       </div>
       <div class="stat-value red">{{ tauxAbsence }}%</div>
@@ -72,34 +45,34 @@
   <!-- AGENT LIST -->
   <div class="sp-card">
     <div class="section-header">
-      <div class="section-title"><i class="bi bi-funnel"></i> Filtres Agents</div>
+      <div class="section-title"><i class="bi bi-funnel"></i> Filters</div>
     </div>
     <div>
       <div class="row g-3">
-        <div class="col-md-3"><input type="text" class="form-input" placeholder="Nom, prénom, matricule..." [(ngModel)]="searchTerm"></div>
+        <div class="col-md-3"><input type="text" class="form-input" placeholder="Name, first name, employee ID..." [(ngModel)]="searchTerm"></div>
         <div class="col-md-2">
           <select class="form-input" [(ngModel)]="filterPoste">
-            <option value="ALL">Tous les postes</option>
+            <option value="ALL">All postes</option>
             <option *ngFor="let poste of availablePostes" [value]="poste">{{ poste }}</option>
           </select>
         </div>
         <div class="col-md-2">
           <select class="form-input" [(ngModel)]="filterTypeContrat">
-            <option value="ALL">Tous les types</option>
+            <option value="ALL">All types</option>
             <option *ngFor="let type of availableTypeContrats" [value]="type">{{ type }}</option>
           </select>
         </div>
         <div class="col-md-2">
           <select class="form-input" [(ngModel)]="filterStatus">
-            <option value="ALL">Tous</option>
-            <option value="PRESENT">Présents</option>
-            <option value="ABSENT">Absents</option>
+            <option value="ALL">All</option>
+            <option value="PRESENT">Present</option>
+            <option value="ABSENT">Absent</option>
           </select>
         </div>
         <div class="col-md-3">
           <button class="btn btn-ghost w-100" type="button" (click)="resetFilters()">
             <i class="bi bi-arrow-clockwise"></i>
-            Réinitialiser
+            Reset
           </button>
         </div>
       </div>
@@ -112,11 +85,11 @@
       <table class="sp-table">
         <thead>
           <tr>
-            <th>Employé</th>
-            <th>Poste & Contrat</th>
-            <th>Coordonnées</th>
-            <th class="text-center">Matricule</th>
-            <th class="text-center">Présence</th>
+            <th>Employee</th>
+            <th>Position & Contract</th>
+            <th>Contact Information</th>
+            <th class="text-center">Employee ID</th>
+            <th class="text-center">Presence</th>
             <th class="text-end">Actions</th>
           </tr>
         </thead>
@@ -147,15 +120,15 @@
                 <span class="badge badge-amber">{{ getCurrentAbsenceType(agent) }}</span>
               </ng-container>
               <ng-template #present>
-                <span class="badge badge-green">Présent</span>
+                <span class="badge badge-green">Present</span>
               </ng-template>
             </td>
             <td class="text-end">
               <div class="pl-actions">
-                <button class="btn btn-ghost btn-sm btn-icon" type="button" title="Contrat PDF" (click)="downloadContratPdf(agent)"><i class="bi bi-file-earmark-pdf"></i></button>
-                <button class="btn btn-ghost btn-sm btn-icon" type="button" title="Attestation de travail PDF" (click)="downloadAttestationPdf(agent)"><i class="bi bi-file-earmark-text"></i></button>
-                <button class="btn btn-ghost btn-sm btn-icon" type="button" title="Modifier" (click)="modifierAgent(agent.matricule)"><i class="bi bi-pencil"></i></button>
-                <button class="btn btn-danger btn-sm btn-icon" type="button" title="Supprimer" (click)="supprimerAgent(agent.matricule)"><i class="bi bi-trash"></i></button>
+                <button class="btn btn-ghost btn-sm btn-icon" type="button" title="Contract PDF" (click)="downloadContratPdf(agent)"><i class="bi bi-file-earmark-pdf"></i></button>
+                <button class="btn btn-ghost btn-sm btn-icon" type="button" title="Work Certificate PDF" (click)="downloadAttestationPdf(agent)"><i class="bi bi-file-earmark-text"></i></button>
+                <button class="btn btn-ghost btn-sm btn-icon" type="button" title="Edit" (click)="modifierAgent(agent.matricule)"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-danger btn-sm btn-icon" type="button" title="Delete" (click)="supprimerAgent(agent.matricule)"><i class="bi bi-trash"></i></button>
               </div>
             </td>
           </tr>
@@ -164,9 +137,9 @@
 
       <div *ngIf="filteredAgents.length === 0" class="empty-state">
         <div class="empty-icon">🕵️</div>
-        <h3>Aucun agent trouvé</h3>
-        <p>Aucun agent ne correspond à vos filtres.</p>
-        <button class="btn btn-primary" type="button" (click)="resetFilters()">Réinitialiser les filtres</button>
+        <h3>No employee found</h3>
+        <p>No employee matches your filters.</p>
+        <button class="btn btn-primary" type="button" (click)="resetFilters()">Reset Filters</button>
       </div>
     </div>
   </div>
@@ -176,23 +149,23 @@
   <!-- INTERVIEW LIST -->
   <div class="sp-card mt-5">
     <div class="section-header">
-      <div class="section-title"><i class="bi bi-calendar2-event"></i> Entretiens Programmés ({{ filteredInterviews.length }})</div>
+      <div class="section-title"><i class="bi bi-calendar2-event"></i> Scheduled Interviews ({{ filteredInterviews.length }})</div>
     </div>
     <div>
       <div class="row g-3">
-        <div class="col-md-4"><input type="text" class="form-input" placeholder="Nom du candidat, offre..." [(ngModel)]="interviewSearchTerm"></div>
+        <div class="col-md-4"><input type="text" class="form-input" placeholder="Candidate name, job offer..." [(ngModel)]="interviewSearchTerm"></div>
         <div class="col-md-3">
           <select class="form-input" [(ngModel)]="interviewFilterStatus">
-            <option value="ALL">Tous les statuts</option>
-            <option value="SCHEDULED">Programmé</option>
-            <option value="COMPLETED">Réalisé</option>
-            <option value="CANCELLED">Annulé</option>
+            <option value="ALL">All statuses</option>
+            <option value="SCHEDULED">Scheduled</option>
+            <option value="COMPLETED">Completed</option>
+            <option value="CANCELLED">Cancelled</option>
           </select>
         </div>
         <div class="col-md-2"><input type="date" class="form-input" [(ngModel)]="interviewFilterDateFrom"></div>
         <div class="col-md-2"><input type="date" class="form-input" [(ngModel)]="interviewFilterDateTo"></div>
         <div class="col-md-1">
-          <button class="btn btn-ghost w-100" type="button" (click)="resetInterviewFilters()" aria-label="Réinitialiser">
+          <button class="btn btn-ghost w-100" type="button" (click)="resetInterviewFilters()" aria-label="Reset">
             <i class="bi bi-arrow-clockwise"></i>
           </button>
         </div>
@@ -200,16 +173,16 @@
     </div>
     <div class="pl-table-wrap">
        <div class="pl-table-meta">
-        Affichage de <strong>{{ filteredInterviews.length }}</strong> entretien(s) sur <strong>{{ interviewsWithCandidates.length }}</strong>
+        Displaying <strong>{{ filteredInterviews.length }}</strong> interview(s) out of <strong>{{ interviewsWithCandidates.length }}</strong>
       </div>
       <table class="sp-table">
         <thead>
           <tr>
-            <th>Candidat</th>
-            <th>Offre d'emploi</th>
-            <th>Date & Heure</th>
-            <th>Lieu</th>
-            <th class="text-center">Statut</th>
+            <th>Candidate</th>
+            <th>Job Offer</th>
+            <th>Date & Time</th>
+            <th>Location</th>
+            <th class="text-center">Status</th>
             <th class="text-end">Actions</th>
           </tr>
         </thead>
@@ -220,13 +193,13 @@
                 <div class="pl-avatar">{{ interview.candidateName ? interview.candidateName.charAt(0) : '?' }}</div>
                 <div>
                   <div class="fw-bold">{{ interview.candidateName }}</div>
-                  <div class="small">{{ interview.candidateEmail || 'Email non disponible' }}</div>
+                  <div class="small">{{ interview.candidateEmail || 'No email available' }}</div>
                 </div>
               </div>
             </td>
             <td><span class="badge badge-blue">{{ interview.jobTitle }}</span></td>
             <td>{{ interview.interviewDate | date:'dd/MM/yyyy HH:mm' }}</td>
-            <td>{{ interview.interviewLocation || 'À confirmer' }}</td>
+            <td>{{ interview.interviewLocation || 'To be confirmed' }}</td>
             <td class="text-center">
               <span class="badge" [ngClass]="{
                 'badge-blue': interview.status === 'SCHEDULED',
@@ -237,9 +210,9 @@
             </td>
             <td class="text-end">
                 <div class="pl-actions">
-                  <button class="btn btn-primary btn-sm" type="button" (click)="acceptInterviewCandidate(interview)">Accepter</button>
-                  <button class="btn btn-danger btn-sm" type="button" (click)="rejectInterviewCandidate(interview)">Refuser</button>
-                  <button class="btn btn-secondary btn-sm" type="button" (click)="cancelScheduledInterview(interview)">Annuler</button>
+                  <button class="btn btn-primary btn-sm" type="button" (click)="acceptInterviewCandidate(interview)">Accept</button>
+                  <button class="btn btn-danger btn-sm" type="button" (click)="rejectInterviewCandidate(interview)">Reject</button>
+                  <button class="btn btn-secondary btn-sm" type="button" (click)="cancelScheduledInterview(interview)">Cancel</button>
                 </div>
             </td>
           </tr>
@@ -248,8 +221,8 @@
 
       <div *ngIf="filteredInterviews.length === 0" class="empty-state">
         <div class="empty-icon">🗓️</div>
-        <h3>Aucun entretien trouvé</h3>
-        <p>Aucun entretien ne correspond à vos filtres.</p>
+        <h3>No interviews found</h3>
+        <p>No interviews match your filters.</p>
       </div>
     </div>
   </div>

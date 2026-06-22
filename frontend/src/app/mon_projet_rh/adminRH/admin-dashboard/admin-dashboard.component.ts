@@ -42,13 +42,61 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   isLoadingStats = true;
   
   menuItems = [
-    { title: 'Gestion des Agents', description: 'Gérez les informations des employés', icon: 'bi bi-people', colorClass: 'sp-bg-primary', route: '/rh/personnel', stat: 'totalPersonnel', statLabel: 'Employés Actifs' },
-    { title: 'Paies & Salaires', description: 'Gérez les paiements et les salaires', icon: 'bi bi-cash-coin', colorClass: 'sp-bg-success', route: '/rh/personnel/paiements', stat: 'totalPayments', statLabel: 'Paiements ce mois' },
-    { title: 'Gestion des Absences', description: 'Suivez les absences des employés', icon: 'bi bi-calendar2-x', colorClass: 'sp-bg-warning', route: '/rh/personnel/absences', stat: 'totalAbsences', statLabel: 'Absences en cours' },
-    { title: 'Recrutement', description: 'Gérez les offres d\'emploi et les candidatures', icon: 'bi bi-briefcase', colorClass: 'sp-bg-info', route: '/rh/recrutement/offres', stat: 'openJobPostings', statLabel: 'Offres Ouvertes' },
-    { title: 'Paramètres', description: 'Configurez les informations de l\'entreprise', icon: 'bi bi-gear', colorClass: 'sp-bg-secondary', route: '/rh/admin/parametres', stat: null, statLabel: '' },
-    { title: 'Contrats', description: 'Gérez les contrats des employés', icon: 'bi bi-file-earmark-text', colorClass: 'sp-bg-danger', route: '/rh/personnel', stat: 'activeContracts', statLabel: 'Contrats Actifs' }
-  ];
+  { 
+    title: 'Agents Management', 
+    description: 'Manage employee information', 
+    icon: 'bi bi-people', 
+    colorClass: 'sp-bg-primary', 
+    route: '/personnel', 
+    stat: 'totalPersonnel', 
+    statLabel: 'Active Employees' 
+  },
+  { 
+    title: 'Payroll & Salaries', 
+    description: 'Manage payments and salaries', 
+    icon: 'bi bi-cash-coin', 
+    colorClass: 'sp-bg-success', 
+    route: '/personnel/paiements', 
+    stat: 'totalPayments', 
+    statLabel: 'Payments this month' 
+  },
+  { 
+    title: 'Absence Management', 
+    description: 'Track employee absences', 
+    icon: 'bi bi-calendar2-x', 
+    colorClass: 'sp-bg-warning', 
+    route: '/personnel/absences', 
+    stat: 'totalAbsences', 
+    statLabel: 'Current Absences' 
+  },
+  { 
+    title: 'Recruitment', 
+    description: 'Manage job postings and applications', 
+    icon: 'bi bi-briefcase', 
+    colorClass: 'sp-bg-info', 
+    route: '/recrutement/offres', 
+    stat: 'openJobPostings', 
+    statLabel: 'Open Positions' 
+  },
+  { 
+    title: 'Settings', 
+    description: 'Configure company information', 
+    icon: 'bi bi-gear', 
+    colorClass: 'sp-bg-secondary', 
+    route: '/admin/parametres', 
+    stat: null, 
+    statLabel: '' 
+  },
+  { 
+    title: 'Contracts', 
+    description: 'Manage employee contracts', 
+    icon: 'bi bi-file-earmark-text', 
+    colorClass: 'sp-bg-danger', 
+    route: '/personnel', 
+    stat: 'activeContracts',
+    statLabel: 'Active Contracts' // Ajouté pour la cohérence avec la statistique
+  }
+];
 
   ngOnInit(): void {
     this.loadStatistics();
@@ -60,7 +108,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
   loadStatistics(): void {
     this.isLoadingStats = true;
-    console.log('🔄 Chargement des statistiques SmartPark...');
+    console.log('🔄 Chargement des statistiques ...');
 
     // forkJoin lance les 3 requêtes en parallèle
     forkJoin({

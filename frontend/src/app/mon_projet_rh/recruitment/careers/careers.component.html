@@ -2,8 +2,8 @@
   <div class="page-content">
     <div class="sp-hero">
       <div>
-        <h1>Rejoignez <span>SmartPark</span></h1>
-        <p>Faites partie de notre équipe innovante et dynamique.</p>
+        <h1>join <span>CompanyName</span></h1>
+        <p>Join our innovative and dynamic team.</p>
       </div>
     </div>
 
@@ -14,13 +14,13 @@
 
       <div class="row g-3">
         <div class="col-md-6">
-          <label class="form-label">Rechercher</label>
-          <input type="text" class="form-input" placeholder="Rechercher un poste..." [(ngModel)]="searchText" (input)="applyFilters()">
+          <label class="form-label">search</label>
+          <input type="text" class="form-input" placeholder="Search for a position..." [(ngModel)]="searchText" (input)="applyFilters()">
         </div>
         <div class="col-md-6">
-          <label class="form-label">Département</label>
+          <label class="form-label">Department</label>
           <select class="form-input" [(ngModel)]="filterDepartment" (change)="applyFilters()">
-            <option value="ALL">Tous les départements</option>
+            <option value="ALL">All Departments</option>
             <option *ngFor="let dept of availableDepartments" [value]="dept">{{ dept }}</option>
           </select>
         </div>
@@ -29,14 +29,14 @@
 
     <div *ngIf="isLoading" class="empty-state">
       <div class="empty-icon">⏳</div>
-      <h3>Chargement</h3>
-      <p>Récupération des offres...</p>
+      <h3>loading</h3>
+      <p>Fetching job postings...</p>
     </div>
 
     <div *ngIf="!isLoading && filteredPostings.length === 0" class="empty-state">
       <div class="empty-icon">🤷</div>
-      <h3>Aucune offre trouvée</h3>
-      <p>Aucune offre d'emploi ne correspond à votre recherche pour le moment.</p>
+      <h3>No job postings found</h3>
+      <p>No job opportunities match your search criteria at the moment.</p>
     </div>
 
     <div *ngIf="!isLoading && filteredPostings.length > 0" class="row g-4">

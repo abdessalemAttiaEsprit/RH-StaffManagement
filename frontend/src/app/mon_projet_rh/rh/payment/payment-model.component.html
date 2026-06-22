@@ -2,8 +2,8 @@
   <div class="sp-modal sp-modal-l" (click)="$event.stopPropagation()">
     
     <div class="sp-modal-header">
-      <h3><i class="bi bi-file-earmark-plus"></i> Nouvelle Fiche de Paie</h3>
-      <button class="btn btn-ghost btn-sm btn-icon" type="button" (click)="onClose()" aria-label="Fermer">
+      <h3><i class="bi bi-file-earmark-plus"></i> New Pay Slip</h3>
+      <button class="btn btn-ghost btn-sm btn-icon" type="button" (click)="onClose()" aria-label="Close">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -23,16 +23,16 @@
             </select>
           </div>
           
-          <div class="sp-divider-text">OU</div>
+          <div class="sp-divider-text">OR</div>
 
           <div class="sp-field">
-            <label class="form-label" for="matricule-search">Rechercher par matricule</label>
+            <label class="form-label" for="matricule-search">Search by Employee ID</label>
             <div class="sp-input-group">
               <i class="bi bi-search"></i>
               <input type="text" 
                      id="matricule-search"
                      class="form-input"
-                     placeholder="Ex: P-2026-0001"
+                     placeholder="e.g., P-2026-0001"
                      [disabled]="loadingList"
                      (input)="paymentForm.get('matricule')?.setValue($any($event.target).value)">
             </div>
@@ -43,11 +43,11 @@
           
           <div class="sp-grid-col-3">
             <div class="sp-field sp-grid-col-span-2">
-              <label class="form-label">Nom Complet</label>
+              <label class="form-label">Full Name</label>
               <input class="form-input" type="text" formControlName="fullPersonnelName" readonly>
             </div>
             <div class="sp-field">
-              <label class="form-label">Mois de paie</label>
+              <label class="form-label">Pay Period</label>
               <select class="form-input" formControlName="month">
                 <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
               </select>
@@ -57,8 +57,8 @@
           <!-- ALERTE DOUBLON -->
           <div *ngIf="duplicatePaymentError" class="alert alert-warning pm-alert">
             <i class="bi bi-exclamation-triangle"></i>
-            <p><strong>Paiement existant!</strong> {{ duplicatePaymentError.replace('⚠️ ', '') }}</p>
-            <button class="sp-btn-icon" type="button" (click)="duplicatePaymentError = ''" aria-label="Fermer">
+            <p><strong>Existing Payment!</strong> {{ duplicatePaymentError.replace('⚠️ ', '') }}</p>
+            <button class="sp-btn-icon" type="button" (click)="duplicatePaymentError = ''" aria-label="Close">
               <i class="bi bi-x-lg"></i>
             </button>
           </div>
@@ -66,15 +66,15 @@
           <div class="sp-card sp-card-box">
             <div class="sp-grid-col-3">
               <div class="sp-field">
-                <label><i class="bi bi-calendar2-x"></i> Jours d'absence</label>
+                <label><i class="bi bi-calendar2-x"></i> Days of Absence</label>
                 <input class="form-input" type="number" formControlName="totalAbsenceDays" readonly>
               </div>
               <div class="sp-stat-box">
-                <label>Quota Toléré</label>
-                <div class="sp-stat-value">{{ calculatedBalance }} jours</div>
+                <label>Allowed Quota</label>
+                <div class="sp-stat-value">{{ calculatedBalance }} days</div>
               </div>
               <div class="sp-stat-box sp-text-danger">
-                <label>Pénalité Déduite</label>
+                <label>Deduction for Absences</label>
                 <div class="sp-stat-value">{{ paymentForm.get('deductionsAbsence')?.value | number:'1.2-2' }} TND</div>
               </div>
             </div>
@@ -82,12 +82,12 @@
 
           <div class="sp-grid-col-2">
             <div class="sp-field">
-              <label class="form-label" for="rib">RIB Bancaire</label>
+              <label class="form-label" for="rib">RIB</label>
               <input class="form-input" type="text" id="rib" formControlName="rib" 
                      [class.is-invalid]="paymentForm.get('rib')?.invalid && paymentForm.get('rib')?.touched"
                      placeholder="RIB (20 chiffres)">
               <div *ngIf="paymentForm.get('rib')?.invalid && paymentForm.get('rib')?.touched" class="sp-field-error">
-                Le RIB est obligatoire pour le virement.
+                The RIB is required for the transfer.
               </div>
             </div>
             <div class="sp-field">
@@ -96,7 +96,7 @@
                      [class.is-invalid]="paymentForm.get('cnssNumber')?.invalid && paymentForm.get('cnssNumber')?.touched"
                      placeholder="Affiliation sociale">
               <div *ngIf="paymentForm.get('cnssNumber')?.invalid && paymentForm.get('cnssNumber')?.touched" class="sp-field-error">
-                Numéro CNSS requis.
+                CNSS number is required.
               </div>
             </div>
           </div>
@@ -106,13 +106,13 @@
 
     <div class="sp-modal-footer">
       <button class="btn btn-secondary" type="button" (click)="onClose()">
-        Annuler
+        Cancel
       </button>
       <button class="btn btn-primary" type="button"
               [disabled]="paymentForm.invalid || !personnelFound || !!duplicatePaymentError" 
               (click)="onSubmit()">
         <i class="bi bi-file-earmark-plus"></i>
-        Générer le bulletin
+        Generate Pay Stub
       </button>
     </div>
 

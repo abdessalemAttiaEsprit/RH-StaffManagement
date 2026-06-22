@@ -14,12 +14,7 @@ export class RecruitmentService {
   private pad2(value: number): string {
     return String(value).padStart(2, '0');
   }
-
-  /**
-   * Spring (LocalDateTime) expects something like `yyyy-MM-ddTHH:mm:ss`.
-   * Angular serializes `Date` to ISO with timezone (`...Z`), which Jackson
-   * may reject for LocalDateTime. This normalizes to a timezone-less string.
-   */
+  
   private toLocalDateTimeString(value: Date | string | null | undefined): string | null | undefined {
     if (value === null || value === undefined) return value;
 

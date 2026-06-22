@@ -1,12 +1,12 @@
 <div class="sp-page">
   <div class="sp-hero">
     <div>
-       <h1><i class="bi bi-speedometer2"></i> Tableau de Bord <span>RH</span></h1>
-      <p>Bienvenue dans SmartPark - Gestion des Ressources Humaines</p>
+       <h1><i class="bi bi-speedometer2"></i> HumanEdge <span> Dashboard</span></h1>
+      <p> Simplify Your HR Management</p>
     </div>
     <div class="sp-hero-actions">
       <button class="btn btn-primary" (click)="loadStatistics()">
-        <i class="bi bi-arrow-repeat"></i> Actualiser
+        <i class="bi bi-arrow-repeat"></i> Refresh Stats
       </button>
     </div>
   </div>
@@ -14,33 +14,33 @@
   <div class="sp-container">
     <!-- Quick Stats Section -->
     <div class="sp-section">
-      <h2 class="sp-section-title">Résumé Rapide</h2>
+      <h2 class="sp-section-title">Quick Stats</h2>
       <div class="sp-stats-grid">
         <!-- Total Personnel -->
         <div class="sp-stat green">
           <div class="s-icon"><i class="bi bi-people"></i></div>
-          <p class="s-label">Employés Total</p>
+          <p class="s-label">Total Personnel</p>
           <p class="s-val green">{{ stats.totalPersonnel }}</p>
         </div>
 
         <!-- Total Payments -->
         <div class="sp-stat blue">
           <div class="s-icon"><i class="bi bi-cash-coin"></i></div>
-          <p class="s-label">Paiements</p>
+          <p class="s-label"> Payments </p>
           <p class="s-val blue">{{ stats.totalPayments }}</p>
         </div>
 
         <!-- Open Job Postings -->
         <div class="sp-stat amber">
           <div class="s-icon"><i class="bi bi-briefcase"></i></div>
-          <p class="s-label">Offres Ouvertes</p>
+          <p class="s-label">Open Job Postings</p>
           <p class="s-val amber">{{ stats.openJobPostings }}</p>
         </div>
 
         <!-- Active Contracts -->
         <div class="sp-stat purple">
           <div class="s-icon"><i class="bi bi-file-earmark-text"></i></div>
-          <p class="s-label">Contrats Actifs</p>
+          <p class="s-label">Active Contracts</p>
           <p class="s-val purple">{{ stats.activeContracts }}</p>
         </div>
       </div>
@@ -49,11 +49,11 @@
     <!-- Loading State -->
     <div *ngIf="isLoadingStats" class="sp-loading-spinner">
       <div class="sp-spinner"></div>
-      <span>Chargement...</span>
+      <span>Loading...</span>
     </div>
     <!-- Navigation Cards Section -->
     <div class="sp-section">
-      <h2 class="sp-section-title">Fonctionnalités Principales</h2>
+      <h2 class="sp-section-title">Main Features</h2>
       <div class="sp-grid-col-3">
         <div *ngFor="let item of menuItems" class="sp-card sp-card-interactive" (click)="navigateTo(item.route)">
           <div class="sp-card-header">
@@ -75,27 +75,27 @@
 
     <!-- Recent Activity Section -->
     <div class="sp-section">
-      <h2 class="sp-section-title">Informations Utiles</h2>
+      <h2 class="sp-section-title">Useful Information</h2>
       <div class="sp-grid-col-3">
         <div class="sp-alert info">
           <i class="bi bi-info-circle"></i>
           <div class="sp-alert-content">
-            <h4 class="sp-alert-title">Bienvenue</h4>
-            <p>Utilisez le tableau de bord pour accéder à toutes les fonctionnalités de gestion RH.</p>
+            <h4 class="sp-alert-title">Welcome</h4>
+            <p>Use the dashboard to access all HR management features.</p>
           </div>
         </div>
         <div class="sp-alert success">
           <i class="bi bi-check-circle"></i>
           <div class="sp-alert-content">
-            <h4 class="sp-alert-title">Mise à jour</h4>
-            <p>Tous les modules sont fonctionnels. Dernière synchro il y a 2 minutes.</p>
+            <h4 class="sp-alert-title">Update</h4>
+            <p>All modules are functional. Last sync was 2 minutes ago.</p>
           </div>
         </div>
         <div class="sp-alert warning">
           <i class="bi bi-exclamation-triangle"></i>
           <div class="sp-alert-content">
             <h4 class="sp-alert-title">Attention</h4>
-            <p>10 absences non justifiées en attente de traitement.</p>
+            <p>10 unjustified absences pending treatment.</p>
           </div>
         </div>
       </div>

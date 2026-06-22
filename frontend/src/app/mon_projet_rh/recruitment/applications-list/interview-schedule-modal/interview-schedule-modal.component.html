@@ -2,8 +2,8 @@
   <div class="sp-modal-overlay" (click)="onClose()">
     <div class="sp-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
       <div class="sp-modal-header">
-        <h5 class="sp-modal-title">Programmer un entretien</h5>
-        <button type="button" class="btn btn-ghost btn-icon" (click)="onClose()" aria-label="Fermer">
+        <h5 class="sp-modal-title">Schedule Interview</h5>
+        <button type="button" class="btn btn-ghost btn-icon" (click)="onClose()" aria-label="Close">
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
@@ -12,7 +12,7 @@
         <div class="alert alert-info" *ngIf="application">
           <i class="bi bi-info-circle"></i>
           <div>
-            <strong>{{ application.candidateName || 'Candidat' }}</strong>
+            <strong>{{ application.candidateName || 'Candidate' }}</strong>
             <span *ngIf="application.jobTitle"> • {{ application.jobTitle }}</span>
           </div>
         </div>
@@ -23,19 +23,19 @@
             <input class="form-input" type="date" [(ngModel)]="form.date">
           </div>
           <div class="col-md-6 sp-field">
-            <label class="form-label">Heure</label>
+            <label class="form-label">Time</label>
             <input class="form-input" type="time" [(ngModel)]="form.time">
           </div>
           <div class="col-12 sp-field">
-            <label class="form-label">Lieu</label>
-            <input class="form-input" type="text" [(ngModel)]="form.location" placeholder="Ex: Bureau RH, Visio...">
+            <label class="form-label">Location</label>
+            <input class="form-input" type="text" [(ngModel)]="form.location" placeholder="Ex: RH Office, Zoom...">
           </div>
         </div>
       </div>
 
       <div class="sp-modal-footer">
-        <button class="btn btn-ghost" type="button" (click)="onClose()">Annuler</button>
-        <button class="btn btn-primary" type="button" (click)="onConfirm()">Confirmer</button>
+        <button class="btn btn-ghost" type="button" (click)="onClose()">Cancel</button>
+        <button class="btn btn-primary" type="button" (click)="onConfirm()">Confirm</button>
       </div>
     </div>
   </div>

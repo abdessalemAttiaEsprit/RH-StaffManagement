@@ -1,53 +1,53 @@
 <div class="page-content">
   <div class="sp-hero">
     <div>
-      <h1>Soumettre votre <span>candidature</span></h1>
-      <p *ngIf="jobPosting"><span class="live-dot"></span> Poste: <strong>{{ jobPosting.title }}</strong></p>
+      <h1>Apply for your <span>candidate</span></h1>
+      <p *ngIf="jobPosting"><span class="live-dot"></span> Position: <strong>{{ jobPosting.title }}</strong></p>
     </div>
     <div>
       <button type="button" class="btn btn-ghost" (click)="cancel()" [disabled]="isSubmitting">
         <i class="bi bi-arrow-left"></i>
-        Retour
+        Back
       </button>
     </div>
   </div>
 
   <div *ngIf="successMessage" class="alert alert-success" role="alert">
     <i class="bi bi-check-circle"></i>
-    <div><strong>Succès:</strong> {{ successMessage }}</div>
+    <div><strong>Success:</strong> {{ successMessage }}</div>
   </div>
   <div *ngIf="errorMessage" class="alert alert-error" role="alert">
     <i class="bi bi-exclamation-triangle"></i>
-    <div><strong>Erreur:</strong> {{ errorMessage }}</div>
+    <div><strong>Error:</strong> {{ errorMessage }}</div>
   </div>
 
   <div *ngIf="isLoading" class="empty-state">
     <div class="empty-icon">⏳</div>
-    <h3>Chargement</h3>
-    <p>Récupération des informations...</p>
+    <h3>Loading</h3>
+    <p>Retrieving information...</p>
   </div>
 
   <div *ngIf="!isLoading && jobPosting" class="apply-grid">
     <div class="sp-card apply-sticky">
       <div class="section-header">
-        <div class="section-title"><i class="bi bi-briefcase"></i> Détails du poste</div>
+        <div class="section-title"><i class="bi bi-briefcase"></i> Position Details</div>
       </div>
 
       <div class="apply-meta">
         <div class="apply-meta-item">
-          <div class="apply-meta-label">Poste</div>
+          <div class="apply-meta-label">Position</div>
           <div class="apply-meta-value">{{ jobPosting.title }}</div>
         </div>
         <div class="apply-meta-item">
-          <div class="apply-meta-label">Département</div>
+          <div class="apply-meta-label">Department</div>
           <div class="apply-meta-value">{{ jobPosting.department }}</div>
         </div>
         <div class="apply-meta-item">
-          <div class="apply-meta-label">Type de contrat</div>
+          <div class="apply-meta-label">Contract Type</div>
           <div class="apply-meta-value">{{ jobPosting.jobType }}</div>
         </div>
         <div class="apply-meta-item">
-          <div class="apply-meta-label">Salaire (DT)</div>
+          <div class="apply-meta-label">Salary (DT)</div>
           <div class="apply-meta-value">{{ jobPosting.salaryMin | number:'1.0-0' }} - {{ jobPosting.salaryMax | number:'1.0-0' }}</div>
         </div>
         <div class="apply-meta-item">
@@ -55,7 +55,7 @@
           <div class="apply-meta-value">{{ jobPosting.deadline | date:'dd/MM/yyyy' }}</div>
         </div>
         <div class="apply-meta-item" *ngIf="jobPosting.requiredSkills?.length">
-          <div class="apply-meta-label">Compétences requises</div>
+          <div class="apply-meta-label">Required Skills</div>
           <div class="apply-meta-tags">
             <span *ngFor="let skill of jobPosting.requiredSkills" class="badge badge-blue">{{ skill }}</span>
           </div>
@@ -65,51 +65,51 @@
 
     <form class="sp-card" (submit)="$event.preventDefault()">
       <div class="section-header">
-        <div class="section-title"><i class="bi bi-person-lines-fill"></i> Formulaire</div>
+        <div class="section-title"><i class="bi bi-person-lines-fill"></i> Application Form</div>
       </div>
 
-      <div class="apply-section-title">Informations personnelles</div>
+      <div class="apply-section-title">Personal Information</div>
       <div class="row g-3">
         <div class="col-md-6 sp-field">
-          <label class="form-label">Prénom <span class="apply-required">*</span></label>
-          <input class="form-input" type="text" [(ngModel)]="candidateForm.firstName" name="firstName" placeholder="Votre prénom" />
+          <label class="form-label">First Name <span class="apply-required">*</span></label>
+          <input class="form-input" type="text" [(ngModel)]="candidateForm.firstName" name="firstName" placeholder="Your first name" />
         </div>
         <div class="col-md-6 sp-field">
-          <label class="form-label">Nom <span class="apply-required">*</span></label>
-          <input class="form-input" type="text" [(ngModel)]="candidateForm.lastName" name="lastName" placeholder="Votre nom" />
+          <label class="form-label">Last Name <span class="apply-required">*</span></label>
+          <input class="form-input" type="text" [(ngModel)]="candidateForm.lastName" name="lastName" placeholder="Your last name" />
         </div>
         <div class="col-md-6 sp-field">
           <label class="form-label">Email <span class="apply-required">*</span></label>
-          <input class="form-input" type="email" [(ngModel)]="candidateForm.email" name="email" placeholder="votre.email@example.com" />
+          <input class="form-input" type="email" [(ngModel)]="candidateForm.email" name="email" placeholder="your.email@example.com" />
         </div>
         <div class="col-md-6 sp-field">
-          <label class="form-label">Téléphone <span class="apply-required">*</span></label>
+          <label class="form-label">Phone Number <span class="apply-required">*</span></label>
           <input class="form-input" type="tel" [(ngModel)]="candidateForm.phoneNumber" name="phoneNumber" placeholder="+216 XX XXX XXX" />
         </div>
         <div class="col-md-6 sp-field">
           <label class="form-label">CIN <span class="apply-required">*</span></label>
-          <input class="form-input" type="text" [(ngModel)]="candidateForm.cin" name="cin" placeholder="Numéro CIN" />
+          <input class="form-input" type="text" [(ngModel)]="candidateForm.cin" name="cin" placeholder="CIN Number" />
         </div>
         <div class="col-md-6 sp-field">
-          <label class="form-label">Date de naissance</label>
+          <label class="form-label">Date of Birth</label>
           <input class="form-input" type="date" [(ngModel)]="candidateForm.dateOfBirth" name="dateOfBirth" />
         </div>
       </div>
 
       <div class="apply-divider"></div>
 
-      <div class="apply-section-title">Informations professionnelles</div>
+      <div class="apply-section-title">Professional Information</div>
       <div class="row g-3">
         <div class="col-md-6 sp-field">
-          <label class="form-label">Titre actuel</label>
-          <input class="form-input" type="text" [(ngModel)]="candidateForm.currentTitle" name="currentTitle" placeholder="Ex: Développeur" />
+          <label class="form-label">Current Title</label>
+          <input class="form-input" type="text" [(ngModel)]="candidateForm.currentTitle" name="currentTitle" placeholder="Ex: Senior Developer" />
         </div>
         <div class="col-md-6 sp-field">
-          <label class="form-label">Entreprise actuelle</label>
-          <input class="form-input" type="text" [(ngModel)]="candidateForm.currentCompany" name="currentCompany" placeholder="Nom de l'entreprise" />
+          <label class="form-label">Current Company</label>
+          <input class="form-input" type="text" [(ngModel)]="candidateForm.currentCompany" name="currentCompany" placeholder="Current Company Name" />
         </div>
         <div class="col-md-6 sp-field">
-          <label class="form-label">Années d'expérience</label>
+          <label class="form-label">Years of Experience</label>
           <input class="form-input" type="number" [(ngModel)]="candidateForm.yearsOfExperience" name="yearsOfExperience" min="0" placeholder="0" />
         </div>
       </div>
@@ -118,7 +118,7 @@
 
       <div class="apply-section-title">CV</div>
       <div class="sp-field">
-        <label class="form-label">Déposer votre CV <span class="apply-required">*</span></label>
+        <label class="form-label">Upload your CV <span class="apply-required">*</span></label>
         <input
           type="file"
           id="cvUpload"
@@ -130,44 +130,44 @@
 
         <div *ngIf="!cvFile" class="apply-upload" (click)="fileInput.click()" role="button" tabindex="0">
           <div class="apply-upload-icon"><i class="bi bi-cloud-arrow-up"></i></div>
-          <div class="apply-upload-title">Cliquez pour télécharger</div>
-          <div class="apply-upload-sub">PDF, DOC ou DOCX • Maximum 10MB</div>
+          <div class="apply-upload-title">Click to upload</div>
+          <div class="apply-upload-sub">PDF, DOC or DOCX • Maximum 10MB</div>
         </div>
 
         <div *ngIf="cvFile" class="apply-upload-success">
           <div class="apply-upload-icon success"><i class="bi bi-check-circle"></i></div>
-          <div class="apply-upload-title">Fichier uploadé</div>
+          <div class="apply-upload-title">File uploaded</div>
           <div class="apply-upload-sub">{{ cvFileName }}</div>
           <button type="button" class="btn btn-danger btn-sm" (click)="removeCVFile()">
             <i class="bi bi-trash"></i>
-            Remplacer
+            Replace
           </button>
         </div>
       </div>
 
       <div class="apply-divider"></div>
 
-      <div class="apply-section-title">Lettre de motivation</div>
+      <div class="apply-section-title">Motivation Letter</div>
       <div class="sp-field">
-        <label class="form-label">Lettre de motivation</label>
+        <label class="form-label">Motivation Letter</label>
         <textarea
           class="form-input"
           [(ngModel)]="applicationForm.coverLetter"
           name="coverLetter"
           rows="6"
-          placeholder="Présentez-vous et expliquez pourquoi vous êtes intéressé par ce poste..."
+          placeholder="Present yourself and explain why you are interested in this position..."
         ></textarea>
-        <div class="apply-help">Minimum 50 caractères requis</div>
+        <div class="apply-help">Minimum 50 characters required</div>
       </div>
 
       <div class="apply-actions">
         <button type="button" class="btn btn-secondary" (click)="cancel()" [disabled]="isSubmitting">
           <i class="bi bi-x-lg"></i>
-          Annuler
+          Cancel
         </button>
         <button type="button" class="btn btn-primary" (click)="submitApplication()" [disabled]="isSubmitting">
-          <span *ngIf="!isSubmitting"><i class="bi bi-send"></i> Soumettre</span>
-          <span *ngIf="isSubmitting"><i class="bi bi-hourglass-split"></i> Envoi en cours...</span>
+          <span *ngIf="!isSubmitting"><i class="bi bi-send"></i> Submit</span>
+          <span *ngIf="isSubmitting"><i class="bi bi-hourglass-split"></i> Sending...</span>
         </button>
       </div>
     </form>

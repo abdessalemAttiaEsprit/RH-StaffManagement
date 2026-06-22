@@ -3,14 +3,14 @@
     <div>
       <button class="btn btn-ghost btn-sm" type="button" (click)="goBack()">
         <i class="bi bi-arrow-left"></i>
-        Retour
+        Back
       </button>
-      <h1>Gestion des <span>Candidatures</span></h1>
+      <h1>Management of <span>Applications</span></h1>
       <p *ngIf="jobPosting"><strong>{{ jobPosting.title }}</strong> • {{ jobPosting.department }}</p>
     </div>
   </div>
 
-  <div class="sp-card rh-subnav" aria-label="Navigation RH">
+  <div class="sp-card rh-subnav" aria-label="RH Navigation">
     <a
       class="rh-subnav-link"
       routerLink="/rh/personnel"
@@ -28,13 +28,13 @@
       routerLink="/rh/personnel/paiements"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
-    >Paiements</a>
+    >Payments</a>
     <a
       class="rh-subnav-link"
       routerLink="/rh/recrutement/offres"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
-    >Offres & Candidatures</a>
+    >Job Postings & Applications</a>
   </div>
 
   <div *ngIf="errorMessage" class="alert alert-error" role="alert">
@@ -44,30 +44,30 @@
 
   <div *ngIf="isLoading" class="empty-state">
     <div class="empty-icon">⏳</div>
-    <h3>Chargement</h3>
-    <p>Récupération des candidatures...</p>
+    <h3>Loading</h3>
+    <p>Fetching applications...</p>
   </div>
 
   <div *ngIf="!isLoading && applications.length === 0" class="empty-state">
     <div class="empty-icon">📭</div>
-    <h3>Aucune candidature</h3>
-    <p>Il n'y a pas encore de candidats pour cette offre.</p>
+    <h3>No Applications</h3>
+    <p>There are no candidates for this position yet.</p>
   </div>
 
   <div *ngIf="!isLoading && applications.length > 0">
     <div class="sp-card mb-4">
       <div class="section-header">
-        <div class="section-title"><i class="bi bi-calendar-check"></i> Entretiens programmés</div>
+        <div class="section-title"><i class="bi bi-calendar-check"></i> Interviews Scheduled</div>
         <span class="badge badge-blue">{{ interviewsToDisplay.length }}</span>
       </div>
 
       <div *ngIf="interviewsToDisplay.length === 0" class="alert alert-info">
         <i class="bi bi-info-circle"></i>
-        <div>Aucun entretien programmé. Cliquez sur “Entretien” pour en planifier un.</div>
+        <div>No interviews scheduled. Click on "Interview" to schedule one.</div>
         <div class="mt-2">
           <button class="btn btn-ghost btn-sm" type="button" (click)="refreshData()" [disabled]="isLoading">
             <i class="bi bi-arrow-clockwise"></i>
-            Actualiser
+            Refresh
           </button>
         </div>
       </div>
@@ -76,11 +76,11 @@
         <table class="sp-table">
           <thead>
             <tr>
-              <th>Candidat</th>
-              <th>Date & Heure</th>
-              <th>Lieu</th>
-              <th>Score AI</th>
-              <th>Durée restante</th>
+              <th>Candidate</th>
+              <th>Date & Time</th>
+              <th>Location</th>
+              <th>AI Score</th>
+              <th>Time Remaining</th>
               <th>CV</th>
               <th>Actions</th>
             </tr>
@@ -104,17 +104,17 @@
               </td>
               <td>
                 <div class="rj-btn-row">
-                  <button *ngIf="app.cvFileId" class="btn btn-ghost btn-sm btn-icon" type="button" (click)="openCV(app)" title="Ouvrir CV" aria-label="Ouvrir CV"><i class="bi bi-paperclip"></i></button>
-                  <button *ngIf="app.cvFileId" class="btn btn-ghost btn-sm btn-icon" type="button" (click)="downloadCV(app)" title="Télécharger CV" aria-label="Télécharger CV"><i class="bi bi-download"></i></button>
+                  <button *ngIf="app.cvFileId" class="btn btn-ghost btn-sm btn-icon" type="button" (click)="openCV(app)" title="Open CV" aria-label="Open CV"><i class="bi bi-paperclip"></i></button>
+                  <button *ngIf="app.cvFileId" class="btn btn-ghost btn-sm btn-icon" type="button" (click)="downloadCV(app)" title="Download CV" aria-label="Download CV"><i class="bi bi-download"></i></button>
                   <span *ngIf="!app.cvFileId" class="small rj-muted">-</span>
                 </div>
               </td>
               <td>
                 <div class="rj-btn-row">
-                  <button class="btn btn-secondary btn-sm btn-icon" type="button" (click)="addToEmployees(app)" title="Ajouter aux employés" aria-label="Ajouter aux employés"><i class="bi bi-check-lg"></i></button>
-                  <button class="btn btn-secondary btn-sm btn-icon" type="button" (click)="scheduleInterview(app)" title="Modifier l'entretien" aria-label="Modifier l'entretien"><i class="bi bi-pencil"></i></button>
-                  <button class="btn btn-danger btn-sm btn-icon" type="button" (click)="deleteInterview(app)" title="Supprimer l'entretien" aria-label="Supprimer l'entretien"><i class="bi bi-trash"></i></button>
-                  <button class="btn btn-danger btn-sm btn-icon" type="button" (click)="deleteApplicationFromInterview(app)" title="Supprimer la candidature" aria-label="Supprimer la candidature"><i class="bi bi-person-x"></i></button>
+                  <button class="btn btn-secondary btn-sm btn-icon" type="button" (click)="addToEmployees(app)" title="Add to Employees" aria-label="Add to Employees"><i class="bi bi-check-lg"></i></button>
+                  <button class="btn btn-secondary btn-sm btn-icon" type="button" (click)="scheduleInterview(app)" title="Edit Interview" aria-label="Edit Interview"><i class="bi bi-pencil"></i></button>
+                  <button class="btn btn-danger btn-sm btn-icon" type="button" (click)="deleteInterview(app)" title="Delete Interview" aria-label="Delete Interview"><i class="bi bi-trash"></i></button>
+                  <button class="btn btn-danger btn-sm btn-icon" type="button" (click)="deleteApplicationFromInterview(app)" title="Delete Application" aria-label="Delete Application"><i class="bi bi-person-x"></i></button>
                 </div>
               </td>
             </tr>
@@ -125,7 +125,7 @@
 
     <div class="sp-card">
       <div class="section-header">
-        <div class="section-title"><i class="bi bi-list-check"></i> Toutes les candidatures</div>
+        <div class="section-title"><i class="bi bi-list-check"></i> All Applications</div>
         <span class="badge badge-blue">{{ applications.length }}</span>
       </div>
 
@@ -135,15 +135,15 @@
           <div class="stat-value blue">{{ applications.length }}</div>
         </div>
         <div class="stat-card green">
-          <div class="stat-label">Acceptés</div>
+          <div class="stat-label">Accepted</div>
           <div class="stat-value green">{{ countStatus('SHORTLISTED') }}</div>
         </div>
         <div class="stat-card amber">
-          <div class="stat-label">En révision</div>
+          <div class="stat-label">Under Review</div>
           <div class="stat-value amber">{{ countStatus('UNDER_REVIEW') }}</div>
         </div>
         <div class="stat-card red">
-          <div class="stat-label">Rejetés</div>
+          <div class="stat-label">Rejected</div>
           <div class="stat-value red">{{ countStatus('REJECTED') }}</div>
         </div>
       </div>
@@ -152,10 +152,10 @@
         <table class="sp-table">
           <thead>
             <tr>
-              <th>Candidat</th>
+              <th>Candidate</th>
               <th>Email</th>
-              <th>Score AI</th>
-              <th>Statut</th>
+              <th>AI Score</th>
+              <th>Status</th>
               <th class="text-end">Actions</th>
             </tr>
           </thead>
@@ -174,11 +174,11 @@
               </td>
               <td class="text-end">
                 <div class="rj-btn-row rj-btn-row-end">
-                  <button class="btn btn-ghost btn-sm btn-icon" type="button" (click)="showApplicationDetails(app)" title="Voir les détails" aria-label="Voir les détails"><i class="bi bi-eye"></i></button>
-                  <button class="btn btn-secondary btn-sm btn-icon" type="button" (click)="scheduleInterview(app)" title="Programmer un entretien" aria-label="Programmer un entretien"><i class="bi bi-calendar-plus"></i></button>
-                  <button *ngIf="app.status !== 'SHORTLISTED'" class="btn btn-secondary btn-sm btn-icon" type="button" (click)="acceptCandidate(app)" title="Accepter" aria-label="Accepter"><i class="bi bi-check-lg"></i></button>
-                  <button *ngIf="app.status !== 'REJECTED'" class="btn btn-danger btn-sm btn-icon" type="button" (click)="rejectCandidate(app)" title="Rejeter" aria-label="Rejeter"><i class="bi bi-x-lg"></i></button>
-                  <button class="btn btn-danger btn-sm btn-icon" type="button" (click)="deleteApplication(app)" title="Supprimer" aria-label="Supprimer"><i class="bi bi-trash"></i></button>
+                  <button class="btn btn-ghost btn-sm btn-icon" type="button" (click)="showApplicationDetails(app)" title="View Details" aria-label="View Details"><i class="bi bi-eye"></i></button>
+                  <button class="btn btn-secondary btn-sm btn-icon" type="button" (click)="scheduleInterview(app)" title="Schedule Interview" aria-label="Schedule Interview"><i class="bi bi-calendar-plus"></i></button>
+                  <button *ngIf="app.status !== 'SHORTLISTED'" class="btn btn-secondary btn-sm btn-icon" type="button" (click)="acceptCandidate(app)" title="Accept" aria-label="Accept"><i class="bi bi-check-lg"></i></button>
+                  <button *ngIf="app.status !== 'REJECTED'" class="btn btn-danger btn-sm btn-icon" type="button" (click)="rejectCandidate(app)" title="Reject" aria-label="Reject"><i class="bi bi-x-lg"></i></button>
+                  <button class="btn btn-danger btn-sm btn-icon" type="button" (click)="deleteApplication(app)" title="Delete" aria-label="Delete"><i class="bi bi-trash"></i></button>
                 </div>
               </td>
             </tr>
